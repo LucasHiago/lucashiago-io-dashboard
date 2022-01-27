@@ -121,12 +121,14 @@
 
     const createWord = () => {
         console.log('create', exampleTitle, exampleLorem);
+        
         let json = {
                 location: 'Word Svelte',
 				title: exampleTitle,
 				subtitle: exampleLorem,
                 language: 'pt'
 		};
+
         startARest('/title/create', 'POST', json);
     }
 
