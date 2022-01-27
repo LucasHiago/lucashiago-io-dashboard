@@ -1,0 +1,10 @@
+input{
+    border-left: 0;
+    border-top: 0;
+    border-right: 0;
+
+    &.title{
+        font-size: calc(var(--md) * 2);
+        padding: var(--sm) 0;
+    }
+}

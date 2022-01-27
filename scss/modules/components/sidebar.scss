@@ -1,0 +1,39 @@
+aside{
+    display:flex;
+    flex-direction: column;
+    height: 100%;
+
+    .person{
+        width:100px;
+        height: 100px;
+        display: flex;
+
+        .image-person{
+            width:100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--bnormal);
+            background: var(--primary-color);
+        }
+    }
+
+    .list-editors{
+        margin: calc(var(--xl) * 4) 0 0 0;
+        .item{
+            margin: var(--xl) 0;
+            .editor{
+                color:var(--primary-color);
+                transition: var(--fast);
+                cursor: pointer;
+
+                &:hover{
+                    i{
+                        transition: var(--fast);
+                        transform: scale(1.1);
+                    }
+                }
+            }
+        }
+    }
+
+}
