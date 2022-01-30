@@ -20,7 +20,7 @@
             {/if}
 
             {#if typeof Titles != 'string'}
-                {#each Titles as item}
+                {#each Titles as item, key}
                     <li class="item-editor">
                         <p>
                             {#if item.title}
@@ -88,7 +88,7 @@
 
 <script>
     import { onMount } from 'svelte';
-    import  startARest, {startRestLoading, setNewNotification, stopRestLoading}   from '../data/httpRequest.js';
+    import  startARest  from '../data/httpRequest.js';
  
     let exampleTitle = 'Example Title';
     let exampleLorem = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi ex aliquam nesciunt repudiandae provident eius, rerum inventore veniam ducimus? Placeat animi illum repellat accusantium nemo beatae repudiandae. Aspernatur, magni quo!';
@@ -96,13 +96,8 @@
     let identifier = null;
     let location = 'section-default';
     let language = 'pt-br';
-
-    import { urlEnv } from '../data/environtment.js';
-
-    let urlDev;
     let Titles = [];
 
-    urlEnv.subscribe(url => urlDev = url);
 
     onMount(async () => {
 
@@ -114,18 +109,29 @@
        language = e.target.value;
     }
 
-    const feedUpdate = async () => {
-       let checkAllList = document.querySelectorAll('.list-editors .item-editor');
+    const rollDown = () => {
+        
+       let list = document.querySelector('.list-inside-content');
 
-       console.log(checkAllList)
+        setTimeout(() => {
+        list.scrollTo({
+            top: list.scrollHeight,
+            behavior: 'smooth'
+        });
+        }, 800);
+    }
+
+    const feedUpdate = async () => {
 
        const res = await startARest('/title', 'GET', null);
        Titles = res;
+
+       rollDown();
+
     }
 
     const createWord = () => {
-        console.log('create', exampleTitle, exampleLorem, location, language);
-        
+
         let json = {
                 location: location,
 				title: exampleTitle,
@@ -142,7 +148,6 @@
     }
 
     const updateWord = () => {
-        console.log('update', exampleTitle, exampleLorem, location, language);
 
         let json = {
             location: location,
@@ -161,7 +166,6 @@
 
     const deleteWord = (e) => {
 
-        console.log('delete', exampleTitle, exampleLorem);
         startARest(`/title/delete/${e.target.dataset.id}`, 'DELETE', null);
 
         setTimeout(() => {

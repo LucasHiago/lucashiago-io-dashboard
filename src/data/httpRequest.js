@@ -18,9 +18,11 @@ export const startRestLoading = () => {
     document.body.append(startDance);
 
     //PREVENTS STOP NEVER CALLS
-    setTimeout(() => {
-        startDance.remove();
-    }, 1500);
+    if(startDance != undefined){
+        setTimeout(() => {
+            startDance.remove();
+        }, 1800);
+    }
 
 }
 
@@ -28,9 +30,12 @@ export const stopRestLoading = () => {
     document.body.classList.remove('loading');
     let startDanceExists = document.querySelector('.startdance');
 
-    setTimeout(() => {
-        startDanceExists.remove();
-    }, 1500);
+    if(startDanceExists != undefined){
+        setTimeout(() => {
+            startDanceExists.remove();
+        }, 1500);
+    }
+
 }
 
 export const setNewNotification = (message, propClass = null) => {
