@@ -3,8 +3,12 @@
 @import './components/reset.scss';
 @import './components/app.scss';
 @import './components/form.scss';
+@import './components/buttons.scss';
+@import './components/notification.scss';
+@import './components/loader.scss';
 
 //COMPONENTS
 @import './components/header.scss';
 @import './components/sidebar.scss';
 @import './components/editor.scss';
+@import './components/editors/word.scss';
