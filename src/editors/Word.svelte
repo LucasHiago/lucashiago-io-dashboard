@@ -105,50 +105,6 @@
     urlEnv.subscribe(url => urlDev = url);
 
     onMount(async () => {
-        //titles
-
-        // startRestLoading();
-
-        // const urls = [
-        //     `${urlDev}/title`,
-        //     // `${urlDev}/subtitle`
-        // ];
-        
-        // try{
-            
-        //     let res = await Promise.all(
-        //         urls.map(e => fetch(e)
-        //                 .then(e => {
-        //                     // if(!e.ok) {
-        //                     //     return e.text().then(text => { throw new Error(text) })
-        //                     // } else 
-        //                     if(e.status == 400) {
-        //                         return 'Sem títulos';
-        //                     } else {
-        //                         return e
-        //                     }
-        //                 })
-        //             )
-        //         );
-
-
-        //     if(res[0] != 'Sem títulos'){
-        //         let resJson = await Promise.all(res.map(e => e.json()));
-        //         resJson = resJson.map(e => e.getTitles);
-        //         Titles = resJson[0];
-        //         stopRestLoading();
-        //         setNewNotification('Títulos carregados com sucesso', 'success');
-        //     } else {
-        //         Titles = res[0];
-        //         stopRestLoading();
-        //         setNewNotification('Ainda não há títulos', 'error');
-        //     }
-                        
-        // }catch(err) {
-        //     console.log(err)
-        //     stopRestLoading();
-        //     setNewNotification(err, 'error');
-        // }
 
         feedUpdate();
 
