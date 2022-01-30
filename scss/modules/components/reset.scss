@@ -1,0 +1,96 @@
+*{
+    padding:0;
+    margin:0;
+    //all:unset;
+    box-sizing: border-box; //leva em conta soma do margin e padding da width total da div
+    -webkit-appearance: none;
+    font: var(--font) var(--md)/var(--sm);
+    list-style: none;
+
+    &::-webkit-scrollbar{
+        width: 1px;
+        height: 1px;
+    }
+
+    &::-webkit-scrollbar-thumb{
+        background: var(--second-color);
+        border-radius: 0;
+    }
+
+    &::-webkit-scrollbar-thumb:hover{
+        background: var(--third-color);
+    }
+
+    &::-webkit-scrollbar-track{
+        background: transparent;
+        border-radius: 0px;
+        //box-shadow: inset 0px 0px 0px 0px #F0F0F0;
+    }
+
+    &:focus{
+        outline: none;
+        transition: var(--fast);
+    }
+
+}
+
+h1{
+    font-size:4em;
+}
+
+h2{
+    font-size:3.5em;
+}
+
+h3{
+    font-size:3em;
+}
+
+h4{
+    font-size: 3.5em;
+}
+
+h5{
+    font-size: 2em;
+}
+
+h6 {
+    font-size: 1.5em;
+}
+
+strong {
+    font-weight: bold;
+}
+
+head > title{
+    display:none;
+}
+
+i{
+    font-size: calc(var(--md) * 2);
+    cursor: pointer;
+    &:hover{
+        transition: var(--fast);
+        transform: scale(1.1);
+    }
+}
+
+.unview{
+    display:none;
+}
+
+.view{
+    display:flex;
+}
+
+.divider{
+    background: var(--second-color);
+    height: 1px;
+    width: 100%;
+    margin: var(--md) 0;
+}
+
+//Quill fixes
+.ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button{
+    margin:0;
+}

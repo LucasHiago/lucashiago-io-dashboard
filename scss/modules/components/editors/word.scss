@@ -1,0 +1,14 @@
+.word-editor{
+    .list-editors{
+        .item-editor{
+            .location{
+                background: var(--second-color);
+                font-size: calc(var(--sm) / 1.25);
+                padding: calc(var(--sm) / 2);
+                border-radius: var(--bbig);
+                color: white;
+            }
+        }
+    }
+
+}

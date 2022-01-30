@@ -1,0 +1,49 @@
+.notification{
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 1%;
+    transform: translateX(0);
+    color:white;
+    font-weight: bold;
+
+    animation: showNote 2s forwards;
+
+    &.hide{
+        animation: hideNote 2s forwards;
+    }
+
+    &.success{
+
+        background: var(--success);
+        padding: var(--lg);
+
+    }
+
+    &.error{
+
+        background: var(--error);
+        padding: var(--lg);
+
+    }
+
+}
+
+@keyframes showNote {
+    from{
+        transform: translateX(100vw);
+    }
+    to{
+        transform: translateX(0);
+    }
+}
+
+@keyframes hideNote {
+    from{
+        transform: translateX(0);
+    }
+    to{
+        transform: translateX(100vw);
+    }
+}
