@@ -28,6 +28,6 @@
 <script>
  
     export let sidebar_items;
-    const src = '/images/person.jpg';
+    const src = '/images/profile.png';
 
 </script>

@@ -89,6 +89,7 @@
 <script>
     import { onMount } from 'svelte';
     import  startARest  from '../data/httpRequest.js';
+    import rollDown from '../data/rollDown.js'; 
  
     let exampleTitle = 'Example Title';
     let exampleLorem = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi ex aliquam nesciunt repudiandae provident eius, rerum inventore veniam ducimus? Placeat animi illum repellat accusantium nemo beatae repudiandae. Aspernatur, magni quo!';
@@ -109,22 +110,15 @@
        language = e.target.value;
     }
 
-    const rollDown = () => {
-        
-       let list = document.querySelector('.list-inside-content');
-
-        setTimeout(() => {
-        list.scrollTo({
-            top: list.scrollHeight,
-            behavior: 'smooth'
-        });
-        }, 800);
-    }
-
     const feedUpdate = async () => {
 
        const res = await startARest('/title', 'GET', null);
-       Titles = res;
+       if(typeof res != 'string'){
+        Titles = res.getTitles;
+       } else {
+        Titles = res;
+       }
+
 
        rollDown();
 

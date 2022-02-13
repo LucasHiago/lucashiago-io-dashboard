@@ -40,29 +40,38 @@ export const stopRestLoading = () => {
 
 export const setNewNotification = (message, propClass = null) => {
     let divNotification = document.createElement('div');
-    let notificationClassExists = document.querySelector('.notification');
-
-    if(notificationClassExists != undefined || notificationClassExists != null) return;
-
+    let progressBar = document.createElement('progress');
+    let notificationController = document.querySelector('.notifications-controller');
+    // let notificationClassExists = document.querySelector('.notification');
+    // if(notificationClassExists != undefined || notificationClassExists != null) return;
     propClass != null ? divNotification.setAttribute('class', `notification ${propClass}`) : divNotification.setAttribute('class', 'notification');
 
-    divNotification.innerHTML = ` ${message} `;
-    document.body.append(divNotification);
+    progressBar.setAttribute('max', '100');
+    progressBar.setAttribute('value', '100');
 
-    setTimeout(() => {
-      divNotification.classList.add('hide');
-    }, 5000);
+    divNotification.innerHTML = ` <p> ${message} </p> `;
+    divNotification.append(progressBar);
+    notificationController.append(divNotification);
 
-    setTimeout(() => {
-      divNotification.remove();
-    }, 6000);
+    let clearProgress = setInterval(function() {
+
+        progressBar.value = progressBar.value - 1;
+
+        if (progressBar.value == 0) {
+            clearInterval(clearProgress);
+            divNotification.classList.add('hide');
+            setTimeout(() => {
+                  divNotification.remove();
+            }, 1000);
+        }
+    }, 25);
 
 }
 
 
 urlEnv.subscribe(url => urlDev = url);
 
-const startARest = async (url, meth, json) => {
+const startARest = async (url, meth, json, customResponse = null, mult = true, file) => {
 
     startRestLoading();
 
@@ -72,25 +81,67 @@ const startARest = async (url, meth, json) => {
     ];
 
     if(meth != 'GET' && meth != 'DELETE'){
-        const fetchHeader = {
-        "Content-type": "application/json; charset=UTF-8"
+
+        let fetchHeader;
+        let fetchType;
+
+        if(mult){
+            fetchHeader = {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        
+            fetchType = {
+                method: meth,
+                body: JSON.stringify(json),
+                headers: fetchHeader
+            }
+        } else {
+            const formData = new FormData();
+            formData.append(file, json);
+        
+            fetchType = {
+                method: meth,
+                body: formData,
+            }
+
+            console.log(fetchType)
         }
 
-        const fetchType = {
-            method: meth,
-            body: JSON.stringify(json),
-            headers: fetchHeader
-        };
+        
+
         
         try{
-            let res = await Promise.all(urls.map(e => fetch(e, fetchType)))
+            let res = await Promise.all(urls.map(e => fetch(e, fetchType).then(
+                    bdres => {
+                        if(!bdres.ok){
+                            bdres.json().then(obj => {
+                                if(obj.error[0].description){
+                                    setNewNotification(obj.error[0].description, 'error');
+                                }else {
+                                    setNewNotification(obj.error, 'error');
+                                }
+                                
+                            })
+                            
+                            return bdres;
+                        } else {
+                            return bdres;
+                        }
+                    }                
+                )
+            ))
             let resJson = await Promise.all(res.map(e => e.json()))
             resJson = resJson.map(e => e)
             stopRestLoading()
-            setNewNotification('Item cadastrado', 'success');
+            if(!customResponse){
+                setNewNotification('Item cadastrado', 'success');
+            } else {
+                setNewNotification(customResponse, 'success');
+            }
+            
         }catch(err) {
             stopRestLoading()
-            setNewNotification(err, 'error');
+            
         }
     } else if (meth == 'DELETE') {
 
@@ -99,7 +150,25 @@ const startARest = async (url, meth, json) => {
         };
         
         try{
-            let res = await Promise.all(urls.map(e => fetch(e, fetchType)))
+            let res = await Promise.all(urls.map(e => fetch(e, fetchType).then(
+                    bdres => {
+                        if(!bdres.ok){
+                            bdres.json().then(obj => {
+                                if(obj.error[0].description){
+                                    setNewNotification(obj.error[0].description, 'error');
+                                }else {
+                                    setNewNotification(obj.error, 'error');
+                                }
+                                
+                            })
+                            
+                            return bdres;
+                        } else {
+                            return bdres;
+                        }
+                    }                
+                )
+            ))
             let resJson = await Promise.all(res.map(e => e.json()))
             resJson = resJson.map(e => e)
             stopRestLoading()
@@ -113,34 +182,45 @@ const startARest = async (url, meth, json) => {
             
             let res = await Promise.all(
             urls.map(e => fetch(e)
-                    .then(e => {
-                        if(e.status == 400) {
-                            return 'Sem títulos';
-                        } else {
-                            return e
-                        }
-                    })
+                    .then(
+                        bdres => {
+                            if(!bdres.ok){
+                                bdres.json().then(obj => {
+                                    if(obj.error[0].description){
+                                        setNewNotification(obj.error[0].description, 'error');
+                                    }else {
+                                        setNewNotification(obj.error, 'error');
+                                    }
+                                    
+                                })
+                                
+                                return 'Sem itens';
+                            } else {
+                                return bdres;
+                            }
+                        }                
+                    )
                 )
             );
 
 
-            if(res[0] != 'Sem títulos'){
+            if(res[0] != 'Sem itens'){
                 let resJson = await Promise.all(res.map(e => e.json()));
-                resJson = resJson.map(e => e.getTitles);
+                resJson = resJson.map(e => e);
+                
                 stopRestLoading()
-                setNewNotification('Items carregados', 'success');
+
+                setNewNotification('Itens carregados', 'success');
                 return Items = resJson[0];
            
             } else {
                 stopRestLoading()
-                setNewNotification('Não existem itens cadastrados', 'success');
+                //setNewNotification('Não existem itens cadastrados', 'error');
                 return Items = res[0];
             }
 
         }catch(err) {
-            console.log(err)
             stopRestLoading()
-            setNewNotification(err, 'error');
         }
     }
 

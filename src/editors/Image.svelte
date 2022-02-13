@@ -1,22 +1,162 @@
-<script>
-	import { onMount } from 'svelte';
+<div class="content media-editor">
+    <div class="actions">
+        <div class="list-icon">
+            <i class="fas fa-list"></i>
+        </div>
+        <div class="action-create">
+            <p>
+                Criar
+            </p>
+            <i class="fas fa-magic"></i>
+        </div>
+    </div>
+    <div class="list-inside-content">
+        <ul class="list-editors">
 
-	let photos = [];
+            {#if Images.length <= 0}
+                <h3>
+                    Não há imagens cadastradas
+                </h3>
+            {/if}
 
-	onMount(async () => {
-		const res = await fetch(`https://jsonplaceholder.typicode.com/photos?_limit=20`);
-		photos = await res.json();
-	});
-</script>
+            {#if Images.length >= 1}
+                {#each Images as item, i}
+                    <li class="item-editor" data-media="https://cdnlucashiagoio.s3.sa-east-1.amazonaws.com/media/{item}" data-item="{item}">
+                        <p>
+							<span>
+                                <div class="mini-player">
+									<img src="https://cdnlucashiagoio.s3.sa-east-1.amazonaws.com/media/{item}" alt="{item.slice(47)}">
+                                </div>
+                            </span>
+                            <span>
+                                {item.slice(47)}
+                            </span>
+                        </p>
+                        <div class="action-editors">
+                            <i class="fas fa-edit" on:click="{handleEditValue}"></i>
+                            <i class="fas fa-trash" data-id="{item.id}" on:click="{deleteMedia}"></i>
+                        </div>
+                    </li>
+                {/each}
+            {/if}
+ 
+        </ul>
+    </div>
+    <div class="divider"></div>
 
-<div class="content">
-	{#each photos as photo}
-		<figure>
-			<img src={photo.thumbnailUrl} alt={photo.title}>
-			<figcaption>{photo.title}</figcaption>
-		</figure>
-	{:else}
-		<!-- this block renders when photos.length === 0 -->
-		<p>loading...</p>
-	{/each}
+    {#if thisMedia != undefined}
+        <div class="media-controller">
+            <i class="fas fa-times" on:click={closeMedia}></i>
+			
+			<!-- svelte-ignore a11y-missing-attribute -->
+			<img src="{thisMedia}" alt="register image">
+
+            {#if editorCreated}
+                <button class="btn first" on:click={createMedia}>Cadastrar imagem</button>
+            {:else}
+                <!-- <button class="btn second" on:click={updateVideo}>Atualizar</button> -->
+            {/if}
+        </div>
+    {/if}
+
+
+    <div class="content-creator">
+
+        <input type="file" name="image" id="image" accept="image/*">
+        <button class="btn first" on:click={previewVideo}>Visualizar imagem</button>
+
+    </div>
 </div>
+
+<script>
+
+    import { onMount } from 'svelte';
+    import startARest from '../data/httpRequest.js';
+    import rollDown from '../data/rollDown.js'; 
+
+    let Images = [];
+    let editorCreated = true;
+    let preview = false;
+    let thisMedia;
+
+    onMount(async () => {
+
+        feedUpdate();
+
+    });
+
+    const feedUpdate = async () => {
+
+        const res = await startARest('/media/list', 'GET', null);
+        if(typeof res != 'string'){
+
+            let treatImages = res.listStream;
+            let treatedImages = [];
+
+            treatImages.filter(media => {
+                if(media.replace('media/', '').length != 0) { 
+                    treatedImages.push(media.replace('media/', '')) 
+                }
+            })
+
+            Images = treatedImages;
+
+        } else {
+            Images = res;
+        }
+
+
+    }
+
+    const handleEditValue = (e) => {
+        thisMedia = e.target.parentElement.parentElement.dataset.media;
+        editorCreated = false;
+    }
+
+    const deleteMedia = (e) => {
+        
+        startARest(`/media/delete/${e.target.parentElement.parentElement.dataset.item}`, 'DELETE', null);
+        
+        setTimeout(() => {
+            feedUpdate();
+            preview = false;
+        }, 500);
+
+        rollDown();
+    }
+
+    const previewVideo = () => {
+        let getMedia = document.querySelector('#image')
+        thisMedia = window.URL.createObjectURL(getMedia.files[0]);
+
+        preview = true;
+        editorCreated = true;
+
+    }
+
+    
+    const createMedia = () => {
+
+        let getMedia = document.querySelector('#image');
+        let media = getMedia.files[0];
+
+        startARest('/media/create', 'POST', media, null, false, 'image');
+
+        setTimeout(() => {
+            feedUpdate();
+            preview = false;
+            thisMedia = undefined;
+        }, 500);
+
+        rollDown();
+    
+    }
+
+    const closeMedia = () => {
+        thisMedia = undefined;
+    }
+
+    const updateMedia = () => {
+        console.log('em construção')
+    }
+</script>
