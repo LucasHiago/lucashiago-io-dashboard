@@ -71,7 +71,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import startARest from '../data/httpRequest.js';
+    import startARest, {startRestLoading, setNewNotification} from '../data/httpRequest.js';
     import rollDown from '../data/rollDown.js'; 
 
     let Images = [];
@@ -87,6 +87,8 @@
 
     const feedUpdate = async () => {
 
+        startRestLoading();
+
         const res = await startARest('/media/list', 'GET', null);
         if(typeof res != 'string'){
 
@@ -100,6 +102,8 @@
             })
 
             Images = treatedImages;
+
+            setNewNotification('Imagens carregadas com sucesso!', 'success');
 
         } else {
             Images = res;
@@ -123,6 +127,8 @@
         }, 500);
 
         rollDown();
+
+        setNewNotification('Imagem deletada com sucesso!', 'success');
     }
 
     const previewVideo = () => {
@@ -149,6 +155,7 @@
         }, 500);
 
         rollDown();
+        setNewNotification('Imagem criada com sucesso!', 'success');
     
     }
 

@@ -73,7 +73,7 @@ urlEnv.subscribe(url => urlDev = url);
 
 const startARest = async (url, meth, json, customResponse = null, mult = true, file) => {
 
-    startRestLoading();
+    // startRestLoading();
 
     const urls = [
         `${urlDev}${url}`,
@@ -103,22 +103,18 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
                 method: meth,
                 body: formData,
             }
-
-            console.log(fetchType)
         }
-
-        
-
         
         try{
             let res = await Promise.all(urls.map(e => fetch(e, fetchType).then(
                     bdres => {
                         if(!bdres.ok){
                             bdres.json().then(obj => {
-                                if(obj.error[0].description){
-                                    setNewNotification(obj.error[0].description, 'error');
-                                }else {
+
+                                if(typeof obj.error != 'object'){
                                     setNewNotification(obj.error, 'error');
+                                }else {
+                                    setNewNotification(JSON.stringify(obj.error), 'error');
                                 }
                                 
                             })
@@ -132,15 +128,15 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
             ))
             let resJson = await Promise.all(res.map(e => e.json()))
             resJson = resJson.map(e => e)
-            stopRestLoading()
-            if(!customResponse){
-                setNewNotification('Item cadastrado', 'success');
-            } else {
-                setNewNotification(customResponse, 'success');
-            }
+            // stopRestLoading()
+            // if(!customResponse){
+            //     setNewNotification('Item cadastrado', 'success');
+            // } else {
+            //     setNewNotification(customResponse, 'success');
+            // }
             
         }catch(err) {
-            stopRestLoading()
+            // stopRestLoading()
             
         }
     } else if (meth == 'DELETE') {
@@ -171,13 +167,15 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
             ))
             let resJson = await Promise.all(res.map(e => e.json()))
             resJson = resJson.map(e => e)
-            stopRestLoading()
-            setNewNotification('Item deletado', 'success');
+            // stopRestLoading()
+            // setNewNotification('Item deletado', 'success');
         }catch(err) {
-            stopRestLoading()
-            setNewNotification(err, 'error');
+            // stopRestLoading()
+            // setNewNotification(err, 'error');
         }
+
     } else {
+
         try{
             
             let res = await Promise.all(
@@ -208,25 +206,24 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
                 let resJson = await Promise.all(res.map(e => e.json()));
                 resJson = resJson.map(e => e);
                 
-                stopRestLoading()
+                // stopRestLoading()
 
-                setNewNotification('Itens carregados', 'success');
+                // setNewNotification('Itens carregados', 'success');
                 return Items = resJson[0];
            
             } else {
-                stopRestLoading()
+                // stopRestLoading()
                 //setNewNotification('Não existem itens cadastrados', 'error');
                 return Items = res[0];
             }
 
         }catch(err) {
-            stopRestLoading()
+            // stopRestLoading()
         }
+
     }
 
-
     return Items;
-
 
 }
 

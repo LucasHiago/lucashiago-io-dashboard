@@ -88,7 +88,7 @@
 
 <script>
     import { onMount } from 'svelte';
-    import  startARest  from '../data/httpRequest.js';
+    import  startARest, {startRestLoading, setNewNotification}  from '../data/httpRequest.js';
     import rollDown from '../data/rollDown.js'; 
  
     let exampleTitle = 'Example Title';
@@ -112,9 +112,12 @@
 
     const feedUpdate = async () => {
 
+        startRestLoading();
+
        const res = await startARest('/title', 'GET', null);
        if(typeof res != 'string'){
         Titles = res.getTitles;
+        setNewNotification('Títulos carregados com sucesso!', 'success');
        } else {
         Titles = res;
        }
@@ -133,7 +136,11 @@
                 language: language
 		};
 
-        startARest('/title/create', 'POST', json);
+        let res = startARest('/title/create', 'POST', {});
+        
+        res.then(r => {
+            console.log(r)
+        })
 
         setTimeout(() => {
             feedUpdate();

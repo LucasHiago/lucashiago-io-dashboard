@@ -73,7 +73,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import startARest from '../data/httpRequest.js';
+    import startARest, {startRestLoading, setNewNotification} from '../data/httpRequest.js';
     import rollDown from '../data/rollDown.js'; 
 
     let Videos = [];
@@ -89,6 +89,8 @@
 
     const feedUpdate = async () => {
 
+        startRestLoading();
+
         const res = await startARest('/video/list', 'GET', null);
         if(typeof res != 'string'){
 
@@ -102,6 +104,8 @@
             })
 
             Videos = treatedVideos;
+
+            setNewNotification('Vídeos carregados com sucesso!', 'success');
 
         } else {
             Videos = res;
@@ -125,6 +129,7 @@
         }, 500);
 
         rollDown();
+        setNewNotification('Vídeo deletado com sucesso!', 'success');
     }
 
     const previewVideo = () => {
@@ -151,6 +156,9 @@
         }, 500);
 
         rollDown();
+        
+        //CRIAR UMA MANEIRA DE PREVENIR MENSAGEM CASO RETORNE ERRO
+        setNewNotification('Vídeo criado com sucesso!', 'success');
     
     }
 

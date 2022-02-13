@@ -71,7 +71,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import startARest from '../data/httpRequest.js';
+    import startARest, {startRestLoading, setNewNotification} from '../data/httpRequest.js';
     import rollDown from '../data/rollDown.js'; 
 
     let Audios = [];
@@ -87,6 +87,8 @@
 
     const feedUpdate = async () => {
 
+        startRestLoading();
+
         const res = await startARest('/audio/list', 'GET', null);
         
         if(typeof res != 'string'){
@@ -101,6 +103,8 @@
             })
 
             Audios = treatedAudios;
+
+            setNewNotification('Audios carregados com sucesso!', 'success');
 
         } else {
             Audios = res;
@@ -124,6 +128,8 @@
         }, 500);
 
         rollDown();
+
+        setNewNotification('Audio deletado com sucesso!', 'success');
     }
 
     const previewAudio = () => {
@@ -150,6 +156,8 @@
         }, 500);
 
         rollDown();
+
+        setNewNotification('Audio criado com sucesso!', 'success');
     
     }
 
