@@ -1,0 +1,38 @@
+.content{
+    &.skills-editor{
+        padding: 0 var(--lg) 0 0;
+        width: 91vw;
+
+        /* x axis */
+        .frappe-chart .x.axis .line-vertical,
+        .frappe-chart .x.axis text, line.dashed {
+            display: none;
+        }
+
+        /* y axis */
+        .frappe-chart .y.axis .line-horizontal, 
+        .frappe-chart .y.axis text, line.dashed {
+            display: none;
+        }
+
+        .two-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .content-creator{
+            height: 50vh;
+
+            .tag-skilly{
+                background: var(--third-color);
+                color: white;
+                font-weight: bold;
+                text-transform: uppercase;
+                font-size: calc(var(--sm)/1.25);
+                padding: calc(var(--sm)/2);
+                margin: calc(var(--sm)/2);
+                max-width: 50%;
+            }
+        }
+    }
+}

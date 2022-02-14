@@ -58,14 +58,17 @@
             titles = [];
         }
 
-        donate.map(item => totalAmount.push(Number(item.transaction_amount)));
+        if(donate){
+            donate.map(item => totalAmount.push(Number(item.transaction_amount)));
+            getTotal = totalAmount.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
 
-        getTotal = totalAmount.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
-
-        totalMedia.push(titles.length, videos.length, images.length, audios.length, donate.length)
-
-        getTotalMedias = totalMedia.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
-
+            totalMedia.push(titles.length, videos.length, images.length, audios.length, donate.length)
+            getTotalMedias = totalMedia.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+        } else {
+            getTotalMedias = 20;
+            getTotal = 0;
+            donate = 0;
+        }   
 
         initializeRemarkable(titles, videos, images, audios, donate, getTotalMedias);
 

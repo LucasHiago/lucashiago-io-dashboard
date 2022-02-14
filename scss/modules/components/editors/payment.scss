@@ -6,6 +6,7 @@
         text-transform: uppercase;
         font-size: calc(var(--sm)/1.25);
         padding: calc(var(--sm)/2);
+        max-width: 50%;
     }
 
     &.content {
@@ -24,6 +25,11 @@
                         justify-content: space-between;
                         align-items: center;
                         width: 100%;
+
+                        span {
+                            flex: 1;
+                            text-align: center;
+                        }
                     }
                 }
             }

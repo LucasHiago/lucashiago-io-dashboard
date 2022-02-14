@@ -35,8 +35,8 @@
                             <span>
                                 Data pagamento
                             </span>
-                            <span style="width: 100px;">
-                                Cartão
+                            <span>
+                                Tipo de pagamento
                             </span>
                         </p>
                     </li>

@@ -112,7 +112,7 @@
 
     const feedUpdate = async () => {
 
-        startRestLoading();
+        //startRestLoading();
 
        const res = await startARest('/title', 'GET', null);
        if(typeof res != 'string'){
@@ -136,7 +136,7 @@
                 language: language
 		};
 
-        let res = startARest('/title/create', 'POST', {});
+        let res = startARest('/title/create', 'POST', json);
         
         res.then(r => {
             console.log(r)

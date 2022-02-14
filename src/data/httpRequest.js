@@ -129,11 +129,9 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
             let resJson = await Promise.all(res.map(e => e.json()))
             resJson = resJson.map(e => e)
             // stopRestLoading()
-            // if(!customResponse){
-            //     setNewNotification('Item cadastrado', 'success');
-            // } else {
-            //     setNewNotification(customResponse, 'success');
-            // }
+            if(customResponse){
+               setNewNotification(customResponse, 'success');
+            } 
             
         }catch(err) {
             // stopRestLoading()
