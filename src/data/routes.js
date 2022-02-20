@@ -31,9 +31,14 @@ export const routesArray = readable([
         icon: `<i class="fas fa-file-invoice-dollar"></i>`,
         path: 'payment'
     },
-    {   
-        name: 'Codes',
-        icon: `<i class="fas fa-file-code"></i>`,
-        path: 'codes'
+    // {   
+    //     name: 'Codes',
+    //     icon: `<i class="fas fa-file-code"></i>`,
+    //     path: 'codes'
+    // },
+    {
+        name: 'Skills',
+        icon: `<i style="font-size:24px;" class="fas fa-chart-pie"></i>`,
+        path: 'skills'
     }
 ]);

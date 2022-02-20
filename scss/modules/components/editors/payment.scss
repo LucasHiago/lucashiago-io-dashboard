@@ -1,0 +1,38 @@
+.payment-editor{
+    .payment-approved{
+        background: var(--success);
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: calc(var(--sm)/1.25);
+        padding: calc(var(--sm)/2);
+        max-width: 50%;
+    }
+
+    &.content {
+        .list-inside-content {
+            max-height: 86vh;
+            height: auto;
+            .list-editors{
+                .item-editor{
+                    padding: var(--md) var(--sm);
+                    margin: 0;
+                    &:nth-child(odd){
+                        background: rgba(0, 0, 0, .03);
+                    }
+                    p{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        width: 100%;
+
+                        span {
+                            flex: 1;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

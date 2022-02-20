@@ -1,0 +1,112 @@
+.content{
+    &.skills-editor{
+        padding: 0 var(--lg) 0 0;
+        width: 91vw;
+
+        /* x axis */
+        .frappe-chart .x.axis .line-vertical,
+        .frappe-chart .x.axis text, line.dashed {
+            display: none;
+        }
+
+        /* y axis */
+        .frappe-chart .y.axis .line-horizontal, 
+        .frappe-chart .y.axis text, line.dashed {
+            display: none;
+        }
+
+        .two-content {
+            display: flex;
+            justify-content: space-between;
+
+            .input-control{
+                input{
+                    width: 100%;
+                }
+
+                .highlited{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    .hightlited-year{
+                        display: flex;
+                        align-items: center;
+                        .inside{
+                            background: var(--third-color);
+                            color:white;
+                            padding: calc(var(--sm)/1.25);
+                            &.error{
+                                background: var(--error);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .limiter-inputs{
+                margin: 0 var(--sm) 0 0;
+            }
+
+            .list-skills{
+                max-height: 47vh;
+                overflow-y: auto;
+            }
+
+            .item-editor{
+                display: flex;
+                justify-content: space-between;
+                padding: var(--sm);
+                div{
+                    flex:unset;
+                }
+                p{
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    span{
+                        margin: calc(var(--sm)/1.5) 0;
+
+                        &.stack{
+                            display:flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            width: 100%;
+
+                            .action-editors{
+                                max-width: 9.5%;
+                            }
+                        }
+
+                        &.tag-skilly, &.tag-know{
+                            margin: 0 calc(var(--sm)/2);
+                        }
+                    }
+                }
+            }
+
+            div{
+                flex:1;
+                
+            }
+        }
+
+        .content-creator{
+            height: 50vh;
+
+            .knowledge {
+                margin: var(--sm) 0;
+            }
+
+            .tag-skilly, .tag-know{
+                background: var(--third-color);
+                color: white;
+                font-weight: bold;
+                text-transform: uppercase;
+                font-size: calc(var(--sm)/1.25);
+                padding: calc(var(--sm)/2);
+                margin: calc(var(--sm)/2);
+                max-width: 50%;
+            }
+        }
+    }
+}

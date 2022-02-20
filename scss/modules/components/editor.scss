@@ -8,6 +8,34 @@ section{
         height: 95%;
         margin:var(--xl)  0 var(--xl) var(--xl);
 
+        &.dash{
+            span.title{
+                font-size: var(--md);
+            }
+
+            .title {
+                font-size: 26px;
+                text-transform: uppercase;
+                font-weight: bold;
+                color:rgb(102, 102, 102);
+            }
+
+            .donates {
+                padding: 0 calc(var(--lg)*1.25);
+                .donate-result{
+                    background: var(--third-color);
+                    border-radius: var(--bnormal);
+                    color: #fff;
+                    font-size: var(--lg);
+                    font-weight: 700;
+                    margin: var(--md) 0;
+                    padding: var(--lg);
+                    width: auto;
+                    position: absolute;
+                }
+            }
+        }
+
         i{
             font-size: calc(var(--md) * 1.25);
         }

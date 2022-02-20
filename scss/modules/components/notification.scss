@@ -1,34 +1,66 @@
-.notification{
-
+.notifications-controller{
     position: absolute;
     right: 0;
     bottom: 0;
     margin: 1%;
-    transform: translateX(0);
-    color:white;
-    font-weight: bold;
+    //width: 250px;
+    display: flex;
+    flex-direction: column;
 
-    animation: showNote 2s forwards;
+    .notification{
+        //margin: 1%;
+        transform: translateX(0);
+        color:white;
+        font-weight: bold;
+        z-index: 999;
 
-    &.hide{
-        animation: hideNote 2s forwards;
+        progress{
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            &::-webkit-progress-bar {
+                background: rgba(0, 0, 0, 0.15);
+            }
+        }
+    
+        animation: showNote .5s forwards;
+    
+        &.hide{
+            animation: hideNote 1.5s forwards;
+        }
+    
+        &.success{
+    
+            background: var(--success);
+            padding: var(--lg);
+
+            progress{
+                &::-webkit-progress-value{
+                    background: var(--third-color);
+                }
+            }
+    
+        }
+    
+        &.error{
+    
+            background: var(--error);
+            padding: var(--lg);
+
+            progress{
+                &::-webkit-progress-value{
+                    background: var(--danger-color);
+                }
+            }
+    
+        }
+    
     }
-
-    &.success{
-
-        background: var(--success);
-        padding: var(--lg);
-
-    }
-
-    &.error{
-
-        background: var(--error);
-        padding: var(--lg);
-
-    }
-
 }
+
+
 
 @keyframes showNote {
     from{
