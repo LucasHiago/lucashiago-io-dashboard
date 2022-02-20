@@ -22,7 +22,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import startARest from '../data/httpRequest.js';
+    import startARest, { setNewNotification, startRestLoading } from '../data/httpRequest.js';
 
     let titles = [];
     let videos = [];
@@ -41,6 +41,8 @@
     });
 
     const feedUpdate = async () => {
+
+        startRestLoading();
 
         const titlesList = await startARest('/title', 'GET', null);
         const videoList  = await startARest('/video/list', 'GET', null);
@@ -71,6 +73,9 @@
         }   
 
         initializeRemarkable(titles, videos, images, audios, donate, getTotalMedias);
+
+        setNewNotification('Dados carregados com sucesso!', 'success');
+
 
     }
  

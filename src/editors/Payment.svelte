@@ -80,7 +80,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import startARest from '../data/httpRequest.js';
+    import startARest, {setNewNotification, startRestLoading} from '../data/httpRequest.js';
 
     let Payments = [];
 
@@ -92,9 +92,13 @@
 
     const feedUpdate = async () => {
 
+        startRestLoading();
+
         const res = await startARest('/history/payments', 'GET', null);
 
         Payments = res.getPayments;
+
+        setNewNotification('Pagamentos carregados com sucesso!', 'success');
 
 
     }

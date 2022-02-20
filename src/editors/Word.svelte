@@ -112,7 +112,7 @@
 
     const feedUpdate = async () => {
 
-        //startRestLoading();
+        startRestLoading();
 
        const res = await startARest('/title', 'GET', null);
        if(typeof res != 'string'){
@@ -137,10 +137,6 @@
 		};
 
         let res = startARest('/title/create', 'POST', json);
-        
-        res.then(r => {
-            console.log(r)
-        })
 
         setTimeout(() => {
             feedUpdate();
