@@ -91,9 +91,9 @@
 
         const res = await startARest('/audio/list', 'GET', null);
         
-        if(typeof res != 'string'){
+        if(res != undefined){
 
-            let treatAudios = res.listStream;
+            let treatAudios = res[0].listStream;
             let treatedAudios = [];
 
             treatAudios.filter(audio => {
@@ -107,7 +107,7 @@
             setNewNotification('Audios carregados com sucesso!', 'success');
 
         } else {
-            Audios = res;
+            Audios = 'Audios não cadastrados';
         }
 
 
@@ -118,9 +118,9 @@
         editorCreated = false;
     }
 
-    const deleteAudio = (e) => {
+    const deleteAudio = async (e) => {
         
-        startARest(`/audio/delete/${e.target.parentElement.parentElement.dataset.item}`, 'DELETE', null);
+        await startARest(`/audio/delete/${e.target.parentElement.parentElement.dataset.item}`, 'DELETE', null);
         
         setTimeout(() => {
             feedUpdate();
@@ -129,7 +129,7 @@
 
         rollDown();
 
-        setNewNotification('Audio deletado com sucesso!', 'success');
+        //setNewNotification('Audio deletado com sucesso!', 'success');
     }
 
     const previewAudio = () => {
@@ -142,12 +142,12 @@
     }
 
     
-    const createAudio = () => {
+    const createAudio = async () => {
 
         let getAudio = document.querySelector('#audio')
         let audio = getAudio.files[0];
 
-        startARest('/audio/create', 'POST', audio, null, false, 'audio');
+        await startARest('/audio/create', 'POST', audio, null, false, 'audio');
 
         setTimeout(() => {
             feedUpdate();
@@ -157,7 +157,7 @@
 
         rollDown();
 
-        setNewNotification('Audio criado com sucesso!', 'success');
+        //setNewNotification('Audio criado com sucesso!', 'success');
     
     }
 
@@ -166,6 +166,6 @@
     }
 
     const updateAudio = () => {
-        console.log('em construção')
+        //console.log('em construção')
     }
 </script>

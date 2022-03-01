@@ -114,16 +114,20 @@
         startRestLoading();
 
         const res = await startARest('/skill', 'GET', null);
+        
+        if(res != undefined){
+            Skills = res[0].getSkills;
+            setNewNotification('Habilidades carregadas com sucesso!', 'success');
+            initializeRemarkable(Skills);
+        } else {
+            Skills = 'Skills não cadastradas';
+        }
 
-        Skills = res.getSkills;
 
-        setNewNotification('Habilidades carregadas com sucesso!', 'success');
-
-        initializeRemarkable(Skills);
 
     }
 
-    const createSkill = () => {
+    const createSkill = async () => {
 
         let json = {
             stack: stackdevelop,
@@ -131,17 +135,13 @@
             stacktime: timedevelop
 		};
 
-        let res = startARest('/skill/create', 'POST', json);
+        await startARest('/skill/create', 'POST', json);
         
-        setNewNotification('Habilidade cadastrada', 'success');
-
-        // res.then(r => {
-        //     setNewNotification(JSON.stringify(r), 'success');
-        // });
-
         setTimeout(() => {
             feedUpdate();
         }, 800);
+
+        //setNewNotification('Habilidade cadastrada', 'success');
 
     }
 
@@ -163,15 +163,15 @@
 
     }
 
-    const deleteSkill = (e) => {
+    const deleteSkill = async (e) => {
 
-        startARest(`/skill/delete/${e.target.dataset.id}`, 'DELETE', null);
-
-        setNewNotification('Habilidade deletada', 'success');
+        await startARest(`/skill/delete/${e.target.dataset.id}`, 'DELETE', null);
 
         setTimeout(() => {
             feedUpdate();
         }, 800);
+
+        //setNewNotification('Habilidade deletada', 'success');
 
     }
 

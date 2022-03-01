@@ -1,7 +1,7 @@
 <aside>
 
     <div class="person">
-        <a href="/">
+        <a href="/user">
             <img class="image-person" {src} alt="profile">
         </a>
     </div>

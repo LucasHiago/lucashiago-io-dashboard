@@ -102,191 +102,111 @@ export const checkCookie = (cname) => {
 
 urlEnv.subscribe(url => urlDev = url);
 
+export const checkLogged = async () => {
+    let Token = getCookie('token');
+    Token == '' ? window.location.href = '/unauthorized' : '' ;
+}
+
 const startARest = async (url, meth, json, customResponse = null, mult = true, file, Token = undefined) => {
-
-    // startRestLoading();
-
     const urls = [
-        `${urlDev}${url}`,
-        // `${urlDev}/subtitle`
-    ];
+        `${urlDev}${url}`
+    ]
 
-    if(meth != 'GET' && meth != 'DELETE'){
+    let fetchHeader;
+    let fetchType;
+    let tken;
+ 
+    Token != undefined ? tken = `Bearer ${Token}` : undefined;
 
-        let fetchHeader;
-        let fetchType;
-        let token;
-
-            if(token != undefined){
-                token = `Bearer ${token}`;
+    if(meth == 'POST' || meth == 'PUT'){
+        if(mult){
+            fetchHeader = {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': tken
             }
-
-            if(mult){
-                fetchHeader = {
-                    "Content-type": "application/json; charset=UTF-8",
-                    'Authorization': token,
-                }
-            
-                fetchType = {
-                    method: meth,
-                    body: JSON.stringify(json),
-                    headers: fetchHeader
-                }
-            } else {
-                const formData = new FormData();
-                formData.append(file, json);
-            
-                fetchType = {
-                    method: meth,
-                    body: formData,
-                }
+    
+            fetchType = {
+                method: meth,
+                body: JSON.stringify(json),
+                headers: fetchHeader
             }
-        
-        try{
-            let res = await Promise.all(urls.map(e => fetch(e, fetchType).then(
-                    bdres => {
-                        if(!bdres.ok){
-                            bdres.json().then(obj => {
-                                setNewNotification(JSON.stringify(obj), 'error');
+        } else {
+            const formData = new FormData();
+            formData.append(file, json);
 
-                                if(typeof obj.error != 'object'){
-                                    setNewNotification(obj.error, 'error');
-                                }else {
-                                    setNewNotification(JSON.stringify(obj.error), 'error');
-                                }
-                            })
-                        } else if (bdres == 401) {
-                            return 'Unauthorized';
-                        } else {
-                            return bdres;
-                        }
-                    }                
-                )
-            ))
-            let resJson = await Promise.all(res.map(e => e.json()))
-            resJson = resJson.map(e => e)
-            // stopRestLoading()
-            if(customResponse){
-               setNewNotification(customResponse, 'success');
-            } 
-
-            return resJson;
-            
-        }catch(err) {
-            // stopRestLoading()
-            
+            fetchType = {
+                method: meth,
+                body: formData
+            }
         }
-    } else if (meth == 'DELETE') {
 
-        const fetchType = {
-            method: meth,
-        };
-        
-        try{
-            let res = await Promise.all(urls.map(e => fetch(e, fetchType).then(
-                    bdres => {
-                        if(!bdres.ok){
-                            bdres.json().then(obj => {
-                                if(obj.error[0].description){
-                                    setNewNotification(obj.error[0].description, 'error');
-                                }else {
-                                    setNewNotification(obj.error, 'error');
-                                }
-                                
-                            })
-                            
-                            return bdres;
-                        } else if (bdres == 401) {
-                            return 'Unauthorized';
-                        } else {
-                            return bdres;
-                        }
-                    }                
-                )
-            ))
-            let resJson = await Promise.all(res.map(e => e.json()))
-            resJson = resJson.map(e => e)
-            // stopRestLoading()
-            // setNewNotification('Item deletado', 'success');
-        }catch(err) {
-            // stopRestLoading()
-            // setNewNotification(err, 'error');
+        let getReturn = await callFetch(urls, fetchType, customResponse);
+
+        return getReturn;
+
+    } else if (meth == 'DELETE'){
+
+        fetchType = {
+            method: meth
         }
+
+        let getReturn = await callFetch(urls, fetchType, customResponse);
+        return getReturn;
 
     } else {
 
-        try{
-            
-            let fetchHeader;
-            let fetchType;
-            let tken;
-
-            if(Token != undefined){
-                tken = `Bearer ${Token}`;
-            }
-
-            console.log(tken)
-
-            fetchHeader = {
-                "Content-type": "application/json; charset=UTF-8",
-                'Authorization': tken,
-            }
-        
-            fetchType = {
-                method: meth,
-                headers: new Headers(fetchHeader)
-            }
-
-            console.log(fetchType)
-
-            let res = await Promise.all(
-            urls.map(e => fetch(e, fetchType)
-                    .then(
-                        bdres => {
-                            if(!bdres.ok){
-                                bdres.json().then(obj => {
-                                    if(obj.error[0].description){
-                                        setNewNotification(obj.error[0].description, 'error');
-                                    }else {
-                                        setNewNotification(obj.error, 'error');
-                                    }
-                                    
-                                })
-                                
-                                return 'Sem itens';
-                            } else if (bdres == 401) {
-                                return 'Unauthorized';
-                            } else {
-                                return bdres;
-                            }
-                        }                
-                    )
-                )
-            );
-            console.log(res)
-
-            if(res[0] != 'Sem itens'){
-                let resJson = await Promise.all(res.map(e => e.json()));
-                resJson = resJson.map(e => e);
-                
-                // stopRestLoading()
-                // setNewNotification('Itens carregados', 'success');
-                return Items = resJson[0];
-           
-            } else {
-                // stopRestLoading()
-                //setNewNotification('Não existem itens cadastrados', 'error');
-                return Items = res[0];
-            }
-
-        }catch(err) {
-            // stopRestLoading()
+        fetchHeader = {
+            'Content-type': 'application/json; charset=UTF-8',
+            'Authorization': tken
         }
 
+        fetchType = {
+            method: meth,
+            headers: new Headers(fetchHeader)
+        }
+
+        let getReturn = await callFetch(urls, fetchType, customResponse);
+
+        return getReturn;
+
     }
+}
 
-    return Items;
+const callFetch = async (urls, fetchType, customResponse = undefined) => {
+    try {
+        let res = await Promise.all(urls.map(result => fetch(result, fetchType).then(
+                treatResult => {
+                    if(!treatResult.ok){
+                        treatResult.json().then(responseError => {
+                            if(typeof responseError != 'object'){
+                                setNewNotification(responseError, 'error');
+                            } else {
+                                setNewNotification(responseError.error, 'error');
 
+                                return responseError;
+                            }
+                        })
+                    } else if (treatResult == 401){
+                        return {error: 'Unauthorized'};
+                    } else {
+                        return treatResult;
+                    }
+                }
+            )
+        ));
+        
+        let resJson = await Promise.all(res.map(result => result.json()));
+        resJson = resJson.map(result => result);
+
+        customResponse ? setNewNotification(customResponse, 'success') : '';
+
+        return resJson;
+
+    }
+    catch(err){
+        console.warn(err)
+        //setNewNotification(err, 'error');
+    }
 }
 
 export default startARest;
