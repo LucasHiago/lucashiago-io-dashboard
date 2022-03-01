@@ -8,6 +8,7 @@
     width: 125px;
     height: 125px;
     margin: 25px;
+    z-index: 2;
 
     &:before {
         content: '';
@@ -17,6 +18,7 @@
         background: white;
         //opacity: .75;
         animation: borderPulse 1.5s ease forwards;
+        z-index: 2;
         border-radius: 100%;
     }
 
