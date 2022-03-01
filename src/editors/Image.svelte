@@ -90,9 +90,10 @@
         startRestLoading();
 
         const res = await startARest('/media/list', 'GET', null);
-        if(typeof res != 'string'){
 
-            let treatImages = res.listStream;
+        if(res != undefined){
+
+            let treatImages = res[0].listStream;
             let treatedImages = [];
 
             treatImages.filter(media => {
@@ -106,7 +107,7 @@
             setNewNotification('Imagens carregadas com sucesso!', 'success');
 
         } else {
-            Images = res;
+            Images = 'Imagens não cadastradas';
         }
 
 
@@ -117,9 +118,9 @@
         editorCreated = false;
     }
 
-    const deleteMedia = (e) => {
+    const deleteMedia = async (e) => {
         
-        startARest(`/media/delete/${e.target.parentElement.parentElement.dataset.item}`, 'DELETE', null);
+        await startARest(`/media/delete/${e.target.parentElement.parentElement.dataset.item}`, 'DELETE', null);
         
         setTimeout(() => {
             feedUpdate();
@@ -128,7 +129,7 @@
 
         rollDown();
 
-        setNewNotification('Imagem deletada com sucesso!', 'success');
+        //setNewNotification('Imagem deletada com sucesso!', 'success');
     }
 
     const previewVideo = () => {
@@ -141,12 +142,12 @@
     }
 
     
-    const createMedia = () => {
+    const createMedia = async () => {
 
         let getMedia = document.querySelector('#image');
         let media = getMedia.files[0];
 
-        startARest('/media/create', 'POST', media, null, false, 'image');
+        await startARest('/media/create', 'POST', media, null, false, 'image');
 
         setTimeout(() => {
             feedUpdate();
@@ -155,7 +156,8 @@
         }, 500);
 
         rollDown();
-        setNewNotification('Imagem criada com sucesso!', 'success');
+        
+        //setNewNotification('Imagem criada com sucesso!', 'success');
     
     }
 
@@ -164,6 +166,6 @@
     }
 
     const updateMedia = () => {
-        console.log('em construção')
+        //console.log('em construção')
     }
 </script>

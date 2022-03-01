@@ -86,7 +86,7 @@
 
     onMount(async () => {
 
-        feedUpdate();
+        await feedUpdate();
 
     });
 
@@ -96,9 +96,8 @@
 
         const res = await startARest('/history/payments', 'GET', null);
 
-        Payments = res.getPayments;
-
-        setNewNotification('Pagamentos carregados com sucesso!', 'success');
+        res != undefined ? Payments = res[0].getPayments : Payment = 'Pagamentos não efetuados';
+        res != undefined ? setNewNotification('Pagamentos carregados com sucesso!', 'success') : '';
 
 
     }

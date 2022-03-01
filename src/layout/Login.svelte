@@ -177,7 +177,7 @@
 
         if(logged[0].token != undefined){
           setCookie('token', logged[0].token, 30);
-          //window.location.href = '/user';
+          window.location.href = '/user';
         }
       }
     

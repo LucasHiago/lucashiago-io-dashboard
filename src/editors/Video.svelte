@@ -92,9 +92,9 @@
         startRestLoading();
 
         const res = await startARest('/video/list', 'GET', null);
-        if(typeof res != 'string'){
+        if(res != undefined){
 
-            let treatVideos = res.listStream;
+            let treatVideos = res[0].listStream;
             let treatedVideos = [];
 
             treatVideos.filter(video => {
@@ -108,7 +108,7 @@
             setNewNotification('Vídeos carregados com sucesso!', 'success');
 
         } else {
-            Videos = res;
+            Videos = 'Videos não cadastrados';
         }
 
 

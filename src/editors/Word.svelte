@@ -88,7 +88,7 @@
 
 <script>
     import { onMount } from 'svelte';
-    import  startARest, {startRestLoading, setNewNotification, getCookie}  from '../data/httpRequest.js';
+    import  startARest, {startRestLoading, setNewNotification, getCookie, checkLogged}  from '../data/httpRequest.js';
     import rollDown from '../data/rollDown.js'; 
  
     let exampleTitle = 'Example Title';
@@ -100,9 +100,11 @@
     let Titles = [];
     let Token = getCookie('token');
 
+
     onMount(async () => {
 
-        Token != '' ? feedUpdate() : window.location.href = '/unauthorized';
+        checkLogged();
+        await feedUpdate();
         
 	});
 
@@ -116,11 +118,11 @@
     
        const res = await startARest('/title', 'GET', null, true, null, null, Token);
 
-       if(typeof res != 'string'){
-        Titles = res.getTitles;
+       if(res != undefined){
+        Titles = res[0].getTitles;
         setNewNotification('Títulos carregados com sucesso!', 'success');
        } else {
-        Titles = res;
+        Titles = 'Sem itens';
        }
 
 
@@ -128,7 +130,7 @@
 
     }
 
-    const createWord = () => {
+    const createWord = async () => {
 
         let json = {
                 location: location,
@@ -137,15 +139,16 @@
                 language: language
 		};
 
-        let res = startARest('/title/create', 'POST', json);
+        await startARest('/title/create', 'POST', json);
 
         setTimeout(() => {
             feedUpdate();
         }, 500);
 
+
     }
 
-    const updateWord = () => {
+    const updateWord = async () => {
 
         let json = {
             location: location,
@@ -154,17 +157,18 @@
             language: language
 		};
 
-        startARest(`/title/update/${identifier}`, 'PUT', json);
+        await startARest(`/title/update/${identifier}`, 'PUT', json);
 
         setTimeout(() => {
             feedUpdate();
         }, 550);
 
+
     }
 
-    const deleteWord = (e) => {
+    const deleteWord = async (e) => {
 
-        startARest(`/title/delete/${e.target.dataset.id}`, 'DELETE', null);
+        await startARest(`/title/delete/${e.target.dataset.id}`, 'DELETE', null);
 
         setTimeout(() => {
             feedUpdate();

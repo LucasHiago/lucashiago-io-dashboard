@@ -40,6 +40,7 @@
         feedUpdate();
 
     });
+    
 
     const feedUpdate = async () => {
 
@@ -51,15 +52,11 @@
         const audiosList = await startARest('/audio/list', 'GET', null);
         const donateList = await startARest('/history/payments', 'GET', null);
 
-        titles = titlesList.getTitles;
-        videos = videoList.listStream;
-        images = imagesList.listStream;
-        audios = audiosList.listStream;
-        donate = donateList.getPayments;
-
-        if(titles == undefined){
-            titles = [];
-        }
+        titlesList != undefined ? titles = titlesList[0].getTitles :   titles   = [];
+        videoList  != undefined ? videos = videoList[0].listStream :   videos   = [];
+        imagesList != undefined ? images = imagesList[0].listStream :  images   = [];
+        audiosList != undefined ? audios = audiosList[0].listStream :  audios   = [];
+        donateList != undefined ? donate = donateList[0].getPayments : donate   = [];
 
         if(donate){
             donate.map(item => totalAmount.push(Number(item.transaction_amount)));
