@@ -22,7 +22,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import startARest, { setNewNotification, startRestLoading } from '../data/httpRequest.js';
+    import startARest, { setNewNotification, startRestLoading, getCookie } from '../data/httpRequest.js';
 
     let titles = [];
     let videos = [];
@@ -33,6 +33,7 @@
     let totalAmount = [];
     let getTotal;
     let getTotalMedias;
+    let Token = getCookie('token');
 
     onMount(async () => {
 
@@ -44,7 +45,7 @@
 
         startRestLoading();
 
-        const titlesList = await startARest('/title', 'GET', null);
+        const titlesList = await startARest('/title', 'GET', null, true, null, null, Token);
         const videoList  = await startARest('/video/list', 'GET', null);
         const imagesList = await startARest('/media/list', 'GET', null);
         const audiosList = await startARest('/audio/list', 'GET', null);

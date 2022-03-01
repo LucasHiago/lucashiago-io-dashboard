@@ -68,10 +68,41 @@ export const setNewNotification = (message, propClass = null) => {
 
 }
 
+export const setCookie = (cname, cvalue, expiring) => {
+    const d = new Date();
+    d.setTime(d.getTime() + (expiring*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires;
+}
+
+export const getCookie = (cname) => {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
+
+export const checkCookie = (cname) => {
+    let check = getCookie(cname);
+    if (check != "") {
+      console.log("cookie exists:" + check);
+    } else {
+       console.log("cookie not exists");
+    }
+}
 
 urlEnv.subscribe(url => urlDev = url);
 
-const startARest = async (url, meth, json, customResponse = null, mult = true, file) => {
+const startARest = async (url, meth, json, customResponse = null, mult = true, file, Token = undefined) => {
 
     // startRestLoading();
 
@@ -84,42 +115,48 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
 
         let fetchHeader;
         let fetchType;
+        let token;
 
-        if(mult){
-            fetchHeader = {
-                "Content-type": "application/json; charset=UTF-8"
+            if(token != undefined){
+                token = `Bearer ${token}`;
             }
-        
-            fetchType = {
-                method: meth,
-                body: JSON.stringify(json),
-                headers: fetchHeader
+
+            if(mult){
+                fetchHeader = {
+                    "Content-type": "application/json; charset=UTF-8",
+                    'Authorization': token,
+                }
+            
+                fetchType = {
+                    method: meth,
+                    body: JSON.stringify(json),
+                    headers: fetchHeader
+                }
+            } else {
+                const formData = new FormData();
+                formData.append(file, json);
+            
+                fetchType = {
+                    method: meth,
+                    body: formData,
+                }
             }
-        } else {
-            const formData = new FormData();
-            formData.append(file, json);
-        
-            fetchType = {
-                method: meth,
-                body: formData,
-            }
-        }
         
         try{
             let res = await Promise.all(urls.map(e => fetch(e, fetchType).then(
                     bdres => {
                         if(!bdres.ok){
                             bdres.json().then(obj => {
+                                setNewNotification(JSON.stringify(obj), 'error');
 
                                 if(typeof obj.error != 'object'){
                                     setNewNotification(obj.error, 'error');
                                 }else {
                                     setNewNotification(JSON.stringify(obj.error), 'error');
                                 }
-                                
                             })
-                            
-                            return bdres;
+                        } else if (bdres == 401) {
+                            return 'Unauthorized';
                         } else {
                             return bdres;
                         }
@@ -132,6 +169,8 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
             if(customResponse){
                setNewNotification(customResponse, 'success');
             } 
+
+            return resJson;
             
         }catch(err) {
             // stopRestLoading()
@@ -157,6 +196,8 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
                             })
                             
                             return bdres;
+                        } else if (bdres == 401) {
+                            return 'Unauthorized';
                         } else {
                             return bdres;
                         }
@@ -176,8 +217,30 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
 
         try{
             
+            let fetchHeader;
+            let fetchType;
+            let tken;
+
+            if(Token != undefined){
+                tken = `Bearer ${Token}`;
+            }
+
+            console.log(tken)
+
+            fetchHeader = {
+                "Content-type": "application/json; charset=UTF-8",
+                'Authorization': tken,
+            }
+        
+            fetchType = {
+                method: meth,
+                headers: new Headers(fetchHeader)
+            }
+
+            console.log(fetchType)
+
             let res = await Promise.all(
-            urls.map(e => fetch(e)
+            urls.map(e => fetch(e, fetchType)
                     .then(
                         bdres => {
                             if(!bdres.ok){
@@ -191,6 +254,8 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
                                 })
                                 
                                 return 'Sem itens';
+                            } else if (bdres == 401) {
+                                return 'Unauthorized';
                             } else {
                                 return bdres;
                             }
@@ -198,14 +263,13 @@ const startARest = async (url, meth, json, customResponse = null, mult = true, f
                     )
                 )
             );
-
+            console.log(res)
 
             if(res[0] != 'Sem itens'){
                 let resJson = await Promise.all(res.map(e => e.json()));
                 resJson = resJson.map(e => e);
                 
                 // stopRestLoading()
-
                 // setNewNotification('Itens carregados', 'success');
                 return Items = resJson[0];
            

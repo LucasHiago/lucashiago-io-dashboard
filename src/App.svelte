@@ -4,7 +4,7 @@
 
 <main>
 	
-	{#if thispage != 'Checkout'}
+	{#if thispage != 'Checkout' && thispage != 'Login' && thispage != 'Unauthorized'}
 		<Header title={'Little bit older'} />
 
 		<div class="main">
@@ -22,14 +22,24 @@
 				</section>
 
 		</div>
-	{:else}
+	{:else if thispage == 'Login'}
+		<section class="Login">
 
+			<svelte:component this="{page}" params="{params}" />	
+
+		</section>
+	{:else if thispage == 'Unauthorized'}
+		<section class="Unauthorized">
+
+			<svelte:component this="{page}" params="{params}" />	
+
+		</section>
+	{:else}
 		<section class="checkout">
 
 			<svelte:component this="{page}" params="{params}" />	
 
 		</section>
-
 	{/if}
 
 </main>
@@ -44,6 +54,8 @@
 	import Dash from './layout/Dash.svelte';
 	import NotFound from './layout/NotFound.svelte';
 	import Checkout from './layout/Checkout.svelte';
+	import Login from './layout/Login.svelte';
+	import Unauthorized from './layout/Unauthorized.svelte';
 
 	import Word from './editors/Word.svelte';
 	import Video from './editors/Video.svelte';
@@ -60,6 +72,14 @@
     let params;
 
 	router('/', 
+		(ctx, next) => {
+			params = ctx.params;
+			thispage = 'Login';
+			next()
+		},
+	() => (page = Login));
+
+	router('/user', 
 		(ctx, next) => {
 			params = ctx.params
 			next()
@@ -85,6 +105,13 @@
 	router('/payment', () => (page = Payment));
 	router('/codes', () => (page = Codes));
 	router('/skills', () => (page = Skills));
+	router('/unauthorized',
+		(ctx, next) => {
+			params = ctx.params;
+			thispage = 'Unauthorized';
+			next()
+		},
+	() => (page = Unauthorized));
 	router('/*', () => (page = NotFound));
 	router.start();
 

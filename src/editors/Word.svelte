@@ -88,7 +88,7 @@
 
 <script>
     import { onMount } from 'svelte';
-    import  startARest, {startRestLoading, setNewNotification}  from '../data/httpRequest.js';
+    import  startARest, {startRestLoading, setNewNotification, getCookie}  from '../data/httpRequest.js';
     import rollDown from '../data/rollDown.js'; 
  
     let exampleTitle = 'Example Title';
@@ -98,12 +98,12 @@
     let location = 'section-default';
     let language = 'pt-br';
     let Titles = [];
-
+    let Token = getCookie('token');
 
     onMount(async () => {
 
-        feedUpdate();
-
+        Token != '' ? feedUpdate() : window.location.href = '/unauthorized';
+        
 	});
 
     const getLanguage = (e) =>{
@@ -112,9 +112,10 @@
 
     const feedUpdate = async () => {
 
-        startRestLoading();
+       startRestLoading();
+    
+       const res = await startARest('/title', 'GET', null, true, null, null, Token);
 
-       const res = await startARest('/title', 'GET', null);
        if(typeof res != 'string'){
         Titles = res.getTitles;
         setNewNotification('Títulos carregados com sucesso!', 'success');

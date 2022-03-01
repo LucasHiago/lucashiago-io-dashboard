@@ -6,6 +6,12 @@
     -webkit-appearance: none;
     font: var(--font) var(--md)/var(--sm);
     list-style: none;
+    border:0;
+    font-family: mr-eaves-modern, sans-serif;
+    background:transparent;
+    &:focus{
+      outline:unset;
+    }
 
     &::-webkit-scrollbar{
         width: 1px;
