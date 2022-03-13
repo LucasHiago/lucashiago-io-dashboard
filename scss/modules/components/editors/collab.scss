@@ -1,0 +1,82 @@
+.collab{
+
+    //MODAL JUST FOR COLLAB
+    .modal-controller{
+        display: flex;
+        background: rgba(138, 0, 242, .65);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        backdrop-filter: blur( 8.5px );
+        -webkit-backdrop-filter: blur( 8.5px );
+
+        .fa-times{
+            margin: 0 0 var(--lg) 0;
+            font-size: calc(var(--lg) * 1.5);
+            color:white;
+        }
+
+        .modal {
+            background: white;
+            border-radius: var(--bnormal);
+            padding: var(--md);
+            max-height: 50vh;
+            max-width: 50vw;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            .list-editors{
+                .item-editor{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+            }
+        }
+    }
+
+    .input-control{
+        display: flex;
+        align-items: center;
+
+        .btn{
+            margin: 0 var(--sm) 0 0;
+        }
+
+        input {
+            margin:0 var(--sm) 0 0;
+        }
+
+        .image-control{
+            width: 100px;
+            height: 100px;
+            position: relative;
+
+            .fa-times{
+                position: absolute;
+                right: 0;
+            }
+
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+    }
+
+    .item-editor{
+        p{
+            display: flex;
+            align-items: center;
+            span{
+                margin: 0 var(--sm) 0 0;
+            }
+        }
+    }
+}

@@ -7,7 +7,7 @@
 <div class="form-controller">
     <form id="form-checkout" >
 
-        <input type="text" value="49" name="amount"> <button name="donate">Doar</button>
+        <input type="text" bind:value={amount} name="amount"> <button name="donate">Doar</button>
 
         <input type="text" name="cardNumber" id="form-checkout__cardNumber" />
         <input type="text" name="cardExpirationMonth" id="form-checkout__cardExpirationMonth" />
@@ -23,15 +23,68 @@
      
         <progress value="0" class="progress-bar">loading...</progress>
     </form>
+
+    <div id="form-checkout-pix">
+        <h3 class="title">Buyer Details</h3>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <input id="form-checkout__payerPixFirstName" name="name" type="text" class="form-control" placeholder="First name"/>
+                <span></span>
+            </div>
+            <div class="form-group col-sm-6">
+                <input id="form-checkout__payerPixLastName" name="lastName" type="text" class="form-control" placeholder="Last name"/>
+                <span></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col">
+                <input id="form-checkout__payerPixEmail" name="email" type="email" class="form-control" placeholder="E-mail"/>
+                <span></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-5">
+                <select id="form-checkout__identificationPixType" name="identificationType" class="form-control">
+                    <option value="CPF">CPF</option>
+                    <option value="CNPJ">CNPJ</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-7">
+                <input id="form-checkout__identificationPixNumber" name="identificationNumber" type="text" class="form-control" placeholder="Identification number" />
+                <span></span>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <input type="hidden" id="amount" bind:value={amount} />
+                <input type="hidden" id="description" bind:value={description} />
+                <button id="form-checkout__submit" class="btn btn-primary btn-block" on:click="{paymentPix}">Gerar Pix</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="pix-payment">
+        {#if pixResponse != undefined}
+             <span> Pix total: R$ {pixResponse.total_paid_amount} </span>
+             <img style="width: 250px; margin: 25px;" src="data:image/jpeg;charset=utf-8;base64, {pixResponse.qr_code_base64}" alt="">
+             <span>
+                 {pixResponse.qr_code}
+             </span>
+        {/if}
+    </div>
 </div>
 
 <script>
 
-    import  startARest  from '../data/httpRequest.js';
+    import  startARest, { setNewNotification }  from '../data/httpRequest.js';
     let mppublic;
     let cardType;
+    let amount = 49;
+    let description = 'Donate pix';
+    let pixResponse;
 
-    const feedPaymentData = (cardData) => {
+    const feedPaymentData = async (cardData) => {
  
         let json = {
             transactionAmount: cardData.amount,
@@ -44,21 +97,66 @@
             number: cardData.identificationNumber
         }
 
+        let res = await startARest('/payment', 'POST', json, 'Pagamento enviado');
+
+        if(res){
+            setTimeout(() => {
+                json = {};
+                console.log('token limpo:', json)
+            }, 500);
+        }
+
+    }
+
+    const paymentPix = async () => {
+
+        let getAllInputs = document.querySelectorAll('#form-checkout-pix input');
+        let getType = document.querySelector('#form-checkout__identificationPixType');
+        let email = getAllInputs[2].value;
+        let name = getAllInputs[0].value;
+        let last_name = getAllInputs[1].value;
+        let type = getType.value;
+        let number = getAllInputs[3].value;
+        let transactionAmount = amount;
+        
+        [...getAllInputs].map(pixData => {
+            if(pixData.value == ''){
+                pixData.parentElement.children[1].innerHTML = `<span>O campo ${pixData.name} está vazio véio</span>`;
+            } else {
+                pixData.parentElement.children[1].innerHTML = '';
+            }
+        })
+        
+
+        let json = {
+            email,
+            name,
+            last_name,
+            type,
+            number,
+            transactionAmount
+        }
+
         console.log(json)
 
-        startARest('/payment', 'POST', json, 'Pagamento enviado');
+        if(![email, name, last_name, type, number, transactionAmount].includes('')){
+            const res = await startARest('/payment/pix', 'POST', json, 'Pix gerado com sucesso!');
+            pixResponse = res[0].makePayment;
+            console.log(pixResponse)
+        }
+        
 
-        setTimeout(() => {
-            json = {};
-            console.log('token limpo:', json)
-        }, 500);
+
 
     }
 
 
     const initializeRemarkable = async () => {
         const res = await startARest('/publicmp', 'GET', null);
-        mppublic = res.mpublic;
+        mppublic = res[0].mpublic;
+
+        console.log(mppublic)
+
         const mp = new MercadoPago(mppublic, {
             locale: 'pt-BR',
             advancedFraudPrevention: true,

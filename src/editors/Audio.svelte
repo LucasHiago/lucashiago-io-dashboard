@@ -71,7 +71,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import startARest, {startRestLoading, setNewNotification} from '../data/httpRequest.js';
+    import startARest, {startRestLoading, setNewNotification, checkLogged} from '../data/httpRequest.js';
     import rollDown from '../data/rollDown.js'; 
 
     let Audios = [];
@@ -81,6 +81,7 @@
 
     onMount(async () => {
 
+        checkLogged();
         feedUpdate();
 
     });

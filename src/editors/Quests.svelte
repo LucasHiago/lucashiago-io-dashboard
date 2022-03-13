@@ -1,4 +1,4 @@
-<div class="content word-editor">
+<div class="content word-editor quest">
     <div class="actions">
         <div class="list-icon">
             <i class="fas fa-list"></i>
@@ -28,18 +28,23 @@
                                     {item.title}
                                 </span>
                             {/if}
-                            {#if item.subtitle}
-                                <span class="subtitle">
-                                    {item.subtitle}
+                            {#if item.price}
+                                <span class="price">
+                                    {item.price}
                                 </span>
                             {/if}
-                            {#if item.location}
-                                <span class="location">
-                                    {item.location}
+                            {#if item.description}
+                                <span class="description">
+                                    {item.description}
+                                </span>
+                            {/if}
+                            {#if item.questPoint >= 0}
+                                <span class="questPoint">
+                                    {item.questPoint}
                                 </span>
                             {/if}
                             {#if item.language}
-                                <span class="language">
+                                <span class="language location">
                                     {item.language}
                                 </span>
                             {/if}
@@ -57,23 +62,21 @@
     <div class="divider"></div>
     <div class="content-creator">
 
-        <div class="three-inputs">
+        <div class="four-inputs">
             <div class="input-control">
-                <input type="text" class="title" bind:value={exampleTitle} />
-            </div>
-            <div class="input-control">
-                <input type="text" class="location" bind:value={location}>
-            </div>
-            <div class="input-control">
+                <input type="text" class="name" bind:value={devName} placeholder="Título da quest" />
+                <input type="text" class="email" bind:value={devEmail} placeholder="Preço da quest">
+                <input type="text" class="points" bind:value={devPoints} placeholder="Pontos da quest">
                 <select name="language" id="language" on:change={getLanguage}>
                     <option value="pt-BR" default selected>PT-BR</option>
                     <option value="en">EN</option>
                 </select>
             </div>
+            <div class="input-control">
+                <textarea type="text" class="discord" bind:value={devDiscord} placeholder="Descrição da quest" rows="5" cols="33"/>
+            </div>
         </div>
 
-
-        <textarea bind:value={exampleLorem} id="" cols="30" rows="10"></textarea>
 
 
 
@@ -90,15 +93,13 @@
     import { onMount } from 'svelte';
     import  startARest, {startRestLoading, setNewNotification, getCookie, checkLogged}  from '../data/httpRequest.js';
     import rollDown from '../data/rollDown.js'; 
- 
-    let exampleTitle = 'Example Title';
-    let exampleLorem = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi ex aliquam nesciunt repudiandae provident eius, rerum inventore veniam ducimus? Placeat animi illum repellat accusantium nemo beatae repudiandae. Aspernatur, magni quo!';
+
+    let devName, devEmail, devDiscord, devPoints;
     let editorCreated = true;
     let identifier = null;
-    let location = 'section-default';
-    let language = 'pt-br';
+    let language = 'pt-BR';
     let Titles = [];
-    let Token = getCookie('token');
+
 
 
     onMount(async () => {
@@ -108,19 +109,15 @@
         
 	});
 
-    const getLanguage = (e) =>{
-       language = e.target.value;
-    }
-
     const feedUpdate = async () => {
 
-       startRestLoading();
+       //startRestLoading();
     
-       const res = await startARest('/title', 'GET', null, true, null, null, Token);
+       const res = await startARest('/quest', 'GET');
 
        if(res != undefined){
-        Titles = res[0].getTitles;
-        setNewNotification('Títulos carregados com sucesso!', 'success');
+        Titles = res[0].getQuests;
+        setNewNotification('Quests carregados com sucesso!', 'success');
        } else {
         Titles = 'Sem itens';
        }
@@ -130,16 +127,22 @@
 
     }
 
+    const getLanguage = (e) =>{
+       language = e.target.value;
+    }
+
+
     const createWord = async () => {
 
         let json = {
-                location: location,
-				title: exampleTitle,
-				subtitle: exampleLorem,
-                language: language
+            title: devName, 
+            price: devEmail, 
+            description: devDiscord, 
+            points: Number(devPoints),
+            language: language
 		};
 
-        await startARest('/title/create', 'POST', json);
+        await startARest('/quest/create', 'POST', json);
 
         setTimeout(() => {
             feedUpdate();
@@ -151,13 +154,13 @@
     const updateWord = async () => {
 
         let json = {
-            location: location,
-			title: exampleTitle,
-			subtitle: exampleLorem,
-            language: language
+            name: devName, 
+            email: devEmail, 
+            discord: devDiscord, 
+            points: devPoints
 		};
 
-        await startARest(`/title/update/${identifier}`, 'PUT', json);
+        await startARest(`/quest/update/${identifier}`, 'PUT', json);
 
         setTimeout(() => {
             feedUpdate();
@@ -168,7 +171,7 @@
 
     const deleteWord = async (e) => {
 
-        await startARest(`/title/delete/${e.target.dataset.id}`, 'DELETE', null);
+        await startARest(`/quest/delete/${e.target.dataset.id}`, 'DELETE', null);
 
         setTimeout(() => {
             feedUpdate();
@@ -178,27 +181,19 @@
 
     const startEditor = (e) => {
 
-        exampleTitle = 'Example Title';
-        exampleLorem = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi ex aliquam nesciunt repudiandae provident eius, rerum inventore veniam ducimus? Placeat animi illum repellat accusantium nemo beatae repudiandae. Aspernatur, magni quo!';
-        language = 'pt-br';
-        location = 'section-default';
         editorCreated = true;
 
     }
 
     const handleEditValue = (e) => {
 
-        let title = e.target.parentElement.parentElement.children[0].children[0].innerHTML;
-        let subtitle = e.target.parentElement.parentElement.children[0].children[1].innerHTML;
-        let locationHtml = e.target.parentElement.parentElement.children[0].children[2].innerHTML;
-        let languageHtml = e.target.parentElement.parentElement.children[0].children[3].innerHTML;
-        let ident = e.target.parentElement.parentElement.children[0].children[0].dataset.id;
+        identifier = e.target.parentElement.parentElement.children[0].children[0].dataset.id;
+        
+        devName = e.target.parentElement.parentElement.children[0].children[0].innerHTML;
+        devEmail = e.target.parentElement.parentElement.children[0].children[1].innerHTML;
+        devDiscord = e.target.parentElement.parentElement.children[0].children[2].innerHTML;
+        devPoints = e.target.parentElement.parentElement.children[0].children[3].innerHTML;
 
-        exampleTitle = title;
-        exampleLorem = subtitle;
-        identifier = ident;
-        location = locationHtml;
-        language = languageHtml;
         editorCreated = false;
 
     }

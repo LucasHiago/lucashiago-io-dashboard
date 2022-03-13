@@ -1,0 +1,9 @@
+.faq{
+    .input-control{
+        display: flex;
+        align-items: flex-start;
+        textarea{
+            margin: 0 var(--sm) 0 0;
+        }
+    }
+}

@@ -3,7 +3,11 @@
 </svelte:head>
 
 <div class="content dash">
-    <div id="frost-chart"></div>
+    {#if lazy == true}
+        <div class="frost-unload"></div>
+    {:else}
+        <div id="frost-chart"></div>
+    {/if}
     <div class="donates">
         <div class="title">
             TOTAL DE DOAÇÕES
@@ -11,9 +15,13 @@
         <div class="donate-result">
             <i class="fas fa-gift"></i>
             {#if getTotal != undefined}
-                <span>
-                    R$ {getTotal}
-                </span>
+                {#if getTotal != 0}
+                    <span>
+                        R$ {getTotal}
+                    </span>
+                {:else}
+                    <span> Sem doações ;( </span>
+                {/if}
             {/if}
         </div>
     </div>
@@ -22,7 +30,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import startARest, { setNewNotification, startRestLoading, getCookie } from '../data/httpRequest.js';
+    import startARest, { setNewNotification, startRestLoading, getCookie, checkLogged } from '../data/httpRequest.js';
 
     let titles = [];
     let videos = [];
@@ -34,9 +42,11 @@
     let getTotal;
     let getTotalMedias;
     let Token = getCookie('token');
+    let lazy = true;
 
     onMount(async () => {
 
+        checkLogged();
         feedUpdate();
 
     });
@@ -58,8 +68,12 @@
         audiosList != undefined ? audios = audiosList[0].listStream :  audios   = [];
         donateList != undefined ? donate = donateList[0].getPayments : donate   = [];
 
-        if(donate){
-            donate.map(item => totalAmount.push(Number(item.transaction_amount)));
+        if(donate.length > 0){
+            donate.map(item => {
+                if(item.status == 'approved'){
+                    totalAmount.push(Number(item.transaction_amount))
+                }
+            });
             getTotal = totalAmount.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
 
             totalMedia.push(titles.length, videos.length, images.length, audios.length, donate.length)
@@ -70,7 +84,11 @@
             donate = 0;
         }   
 
-        initializeRemarkable(titles, videos, images, audios, donate, getTotalMedias);
+        lazy = false;
+
+        setTimeout(() => {
+            initializeRemarkable(titles, videos, images, audios, donate, getTotalMedias);
+        }, 550);
 
         setNewNotification('Dados carregados com sucesso!', 'success');
 
@@ -79,6 +97,8 @@
  
 
     const initializeRemarkable = async (titles, videos, images, audios, donate, total) => {
+
+        
   
         new frappe.Chart( "#frost-chart", {
         data: {
