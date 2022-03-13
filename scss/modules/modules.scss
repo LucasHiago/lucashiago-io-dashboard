@@ -9,6 +9,7 @@
 
 //LAYOUT
 @import './layout/login.scss';
+@import './layout/unauthorized.scss';
 
 //COMPONENTS
 @import './components/header.scss';
@@ -20,3 +21,6 @@
 @import './components/editors/images.scss';
 @import './components/editors/payment.scss';
 @import './components/editors/skills.scss';
+@import './components/editors/quests.scss';
+@import './components/editors/faq.scss';
+@import './components/editors/collab.scss';

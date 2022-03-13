@@ -9,6 +9,9 @@
     border:0;
     font-family: mr-eaves-modern, sans-serif;
     background:transparent;
+
+    @import url('https://fonts.googleapis.com/css?family=Raleway:900&display=swap');
+
     &:focus{
       outline:unset;
     }
@@ -82,11 +85,11 @@ i{
 }
 
 .unview{
-    display:none;
+    display:none !important;
 }
 
 .view{
-    display:flex;
+    display:flex !important;
 }
 
 .divider{

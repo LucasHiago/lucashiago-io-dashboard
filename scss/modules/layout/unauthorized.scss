@@ -1,0 +1,32 @@
+.unauthorized-controller{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    
+    .unauthorized-image{
+        position: absolute;
+        left: 0;
+    }
+
+    h1{
+        position: relative;
+        z-index: 2;
+    }
+}
+
+.unauthorized-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+
+    &::-webkit-progress-bar {
+        background: rgba(0, 0, 0, 0.15);
+    }
+
+    &::-webkit-progress-value{
+        background: var(--error);
+    }
+}

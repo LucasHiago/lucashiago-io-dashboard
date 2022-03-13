@@ -13,6 +13,22 @@ section{
                 font-size: var(--md);
             }
 
+            .frost-unload{
+                animation: animate-skeleton-screen-gradient 1.5s linear infinite;
+                background: linear-gradient(-45deg,#DADADA 40%,#F8F6F7 50%,#FAFAFA 52%,#F8F6F7 54%,#DADADA 60%);
+                background-position: 118% 4%;
+                background-size: 500% 500%;
+                width: 100%;
+                height: 226px;
+                margin-bottom: var(--md);
+            }
+
+            @keyframes animate-skeleton-screen-gradient{
+                0%,
+                50%{background-position:0 50%}
+                100%{background-position:100% 51%}
+            }
+
             .title {
                 font-size: 26px;
                 text-transform: uppercase;

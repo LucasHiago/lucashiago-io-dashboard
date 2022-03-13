@@ -64,6 +64,10 @@
 	import Payment from './editors/Payment.svelte';
 	import Codes from './editors/Codes.svelte';
 	import Skills from './editors/Skills.svelte';
+	import Lead from './editors/Leads.svelte';
+	import Quest from './editors/Quests.svelte';
+	import Questions from './editors/Questions.svelte';
+	import Collab from './editors/Collab.svelte';
 
 	import router from "page";
 
@@ -93,6 +97,14 @@
 		},
 	() => (page = Checkout));
 
+	router('/leads', (ctx, next) => {
+		params = ctx.params;
+		next()
+	}, () => (page = Lead));
+
+	router('/quest', () => (page = Quest));
+	router('/faq', () => (page = Questions));
+	router('/collab', () => (page = Collab));
 	router('/word', () => (page = Word));
 	router('/video', () => (page = Video));
 	router('/image',

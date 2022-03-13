@@ -19,6 +19,31 @@
     .view{
          display:flex !important;
     }
+
+    .morph-text{
+      position: absolute;
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      transform: translate(0vw, 0vh) rotate(-90deg);
+
+      filter: url(#threshold) blur(0.6px);
+
+      #morhpeus, #neo {
+        position: absolute;
+        width: 100%;
+        display: inline-block;
+        
+        font-family: 'Raleway', sans-serif;
+        font-size: 40pt;
+        
+        text-align: center;
+        
+        user-select: none;
+      }
+    }
       
       .content-controller{
         
@@ -88,6 +113,19 @@
               position:relative;
               display:flex;
               align-items:center;
+
+              .action-login {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                .svg-loader {
+                  transform: scale(.45) translate(0px, 35px);
+                  pointer-events: none;
+                  position: absolute;
+                  z-index: 9;
+                }
+              }
               
               i{
                 cursor:pointer;
@@ -106,6 +144,7 @@
                 border-bottom:1px solid  #dbdbdb;
                 width:350px;
                 font-size:14pt;
+                cursor: pointer;
 
                 &:-webkit-autofill{
                     -webkit-text-fill-color: #000;
@@ -174,10 +213,6 @@
 
                   -webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.05); 
                   box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.05);
-                  &:hover{
-                    transition:var(--small);
-                    transform:translateY(5px);
-                  }
                 }
               }
               label, i{
@@ -256,7 +291,7 @@
         position: absolute;
         margin-left: 35vw;
         z-index: 0;
-        //opacity: .08;
+        opacity: .08;
 
         &.reverse{
           opacity: 0.08;
@@ -276,3 +311,5 @@
         }
       }
 }
+
+

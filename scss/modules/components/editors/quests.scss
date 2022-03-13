@@ -1,0 +1,7 @@
+.quest{
+    .price{
+        &:before{
+            content: 'R$'
+        }
+    }
+}

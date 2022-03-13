@@ -92,7 +92,7 @@
 
 <script>
     import { onMount } from 'svelte';
-    import  startARest, {startRestLoading, setNewNotification}  from '../data/httpRequest.js';
+    import  startARest, {startRestLoading, setNewNotification, checkLogged}  from '../data/httpRequest.js';
 
     let editorCreated = true;
     let YearSkill = [];
@@ -105,6 +105,7 @@
 
     onMount(async () => {
 
+        checkLogged();
         feedUpdate();
 
 	});
