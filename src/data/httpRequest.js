@@ -204,7 +204,7 @@ const callFetch = async (urls, fetchType, customResponse = undefined) => {
         let resJson = await Promise.all(res.map(result => result.json()));
         resJson = resJson.map(result => result);
 
-        customResponse ? setNewNotification(customResponse, 'success') : '';
+        (customResponse != undefined && customResponse != true && customResponse != null) ? setNewNotification(customResponse, 'success') : '';
 
         return resJson;
 
@@ -213,7 +213,7 @@ const callFetch = async (urls, fetchType, customResponse = undefined) => {
 
         stopRestLoading();
 
-        console.warn(err)
+        console.warn(err);
         //setNewNotification(err, 'error');
     }
 }

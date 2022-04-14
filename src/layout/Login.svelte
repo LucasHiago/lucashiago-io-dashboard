@@ -114,7 +114,7 @@
 	</defs>
 </svg>
 
-<div class="bg-effect">
+<!-- <div class="bg-effect">
     <svg class="rect-rotate" id="bg-rect-one" width="75" height="75" xmlns="http://www.w3.org/2000/svg">
       <rect width="75" height="75" stroke="currentColor" fill="transparent" stroke-width="15"></rect>
     </svg>
@@ -136,7 +136,7 @@
   <svg class="rect-rotate" id="bg-rect-three"  width="75" height="75" xmlns="http://www.w3.org/2000/svg">
     <rect width="75" height="75" stroke="currentColor" fill="transparent" stroke-width="15"></rect>
   </svg>
-</div>
+</div> -->
 
 <script>
 

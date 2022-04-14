@@ -1,6 +1,26 @@
 .word-editor{
+
+    svg{
+        width: 100%;
+    }
+
     .list-editors{
         .item-editor{
+
+            p{
+                display: flex;
+                align-items: center;
+                span{
+                    display: flex;
+                    align-items: center;
+                    margin: 0 calc(var(--sm) / 2.25);
+                }
+            }
+
+            .description {
+                font-size: var(--sm);
+            }
+
             .location{
                 background: var(--second-color);
                 font-size: calc(var(--sm) / 1.25);
@@ -8,7 +28,29 @@
                 border-radius: var(--bbig);
                 color: white;
             }
+
+            .icon-list{
+                width: 25px;
+            }
+        }
+    }
+    .content-creator{
+        textarea{
+            //height: 50px;
+            width: 100%;
         }
     }
 
+    .icon-controller{
+        position: relative;
+        span{
+            bottom: -75px;
+            height: 75px;
+            position: absolute;
+            left: 0;
+            width: 75px;
+            border: 1px solid #cccccc;
+            padding: 15px;
+        }
+    }
 }

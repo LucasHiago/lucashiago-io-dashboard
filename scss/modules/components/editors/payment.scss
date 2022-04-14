@@ -9,7 +9,7 @@
             padding: calc(var(--sm)/2);
             max-width: 50%;
         }
-        &-pending{
+        &-pending, &-cancelled{
             background: var(--error);
             color: white;
             font-weight: bold;

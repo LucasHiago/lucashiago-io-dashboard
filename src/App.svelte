@@ -67,7 +67,10 @@
 	import Lead from './editors/Leads.svelte';
 	import Quest from './editors/Quests.svelte';
 	import Questions from './editors/Questions.svelte';
+	import QClients from './editors/QuestionsClients.svelte';
 	import Collab from './editors/Collab.svelte';
+	import Work from './editors/Work.svelte';
+	import ClientLeads from './editors/LeadsClient.svelte';
 
 	import router from "page";
 
@@ -104,8 +107,11 @@
 
 	router('/quest', () => (page = Quest));
 	router('/faq', () => (page = Questions));
+	router('/client', () => (page = QClients));
+	router('/clientl', () => (page = ClientLeads));
 	router('/collab', () => (page = Collab));
 	router('/word', () => (page = Word));
+	router('/work', () => (page = Work));
 	router('/video', () => (page = Video));
 	router('/image',
 		(ctx, next) => {

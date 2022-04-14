@@ -1,4 +1,4 @@
-<div class="content word-editor faq">
+<div class="content word-editor">
     <div class="actions">
         <div class="list-icon">
             <i class="fas fa-list"></i>
@@ -23,19 +23,19 @@
                 {#each Titles as item, key}
                     <li class="item-editor">
                         <p>
-                            {#if item.question}
-                                <span class="question" data-id={item.id}>
-                                    {item.question}
+                            {#if item.name}
+                                <span class="devName" data-id={item.id}>
+                                    {item.name}
                                 </span>
                             {/if}
-                            {#if item.answer}
-                                <span class="answer">
-                                    {item.answer}
+                            {#if item.email}
+                                <span class="devEmail">
+                                    {item.email}
                                 </span>
                             {/if}
-                            {#if item.language}
-                                <span class="language">
-                                    {item.language}
+                            {#if item.telefone}
+                                <span class="devDiscord">
+                                    {item.telefone}
                                 </span>
                             {/if}
                         </p>
@@ -54,12 +54,9 @@
 
         <div class="four-inputs">
             <div class="input-control">
-                <textarea type="text" class="name" bind:value={devName} placeholder="Pergunta"  rows="5" cols="33"/>
-                <textarea type="text" class="email" bind:value={devEmail} placeholder="Resposta" rows="5" cols="33"/>
-                <select name="language" id="language" on:change={getLanguage}>
-                    <option value="pt-br" default selected>PT-BR</option>
-                    <option value="en">EN</option>
-                </select>
+                <input type="text" class="name" bind:value={devName} placeholder="Nome" />
+                <input type="text" class="email" bind:value={devEmail} placeholder="Email">
+                <input type="text" class="discord" bind:value={devTelefone} placeholder="Telefone">
             </div>
         </div>
 
@@ -80,10 +77,9 @@
     import  startARest, {startRestLoading, setNewNotification, getCookie, checkLogged}  from '../data/httpRequest.js';
     import rollDown from '../data/rollDown.js'; 
 
-    let devName, devEmail, devDiscord, devPoints;
+    let devName, devEmail, devTelefone;
     let editorCreated = true;
     let identifier = null;
-    let language = 'pt-br';
     let Titles = [];
 
 
@@ -99,11 +95,11 @@
 
        //startRestLoading();
     
-       const res = await startARest('/faq', 'GET');
+       const res = await startARest('/client', 'GET');
 
        if(res != undefined){
-        Titles = res[0].getQuestions;
-        setNewNotification('Questions carregados com sucesso!', 'success');
+        Titles = res[0].getLeads;
+        setNewNotification('Leads carregados com sucesso!', 'success');
        } else {
         Titles = 'Sem itens';
        }
@@ -113,20 +109,15 @@
 
     }
 
-    const getLanguage = (e) =>{
-       language = e.target.value;
-    }
-
-
     const createWord = async () => {
 
         let json = {
-            question: devName, 
-            answer: devEmail, 
-            language: language
+            name: devName, 
+            email: devEmail, 
+            tekefibe: devTelefone
 		};
 
-        await startARest('/faq/create', 'POST', json);
+        await startARest('/client/create', 'POST', json);
 
         setTimeout(() => {
             feedUpdate();
@@ -138,12 +129,13 @@
     const updateWord = async () => {
 
         let json = {
-            question: devName, 
-            answer: devEmail, 
-            language: language
+            name: devName, 
+            email: devEmail, 
+            discord: devDiscord, 
+            points: devPoints
 		};
 
-        await startARest(`/faq/update/${identifier}`, 'PUT', json);
+        await startARest(`/client/update/${identifier}`, 'PUT', json);
 
         setTimeout(() => {
             feedUpdate();
@@ -154,7 +146,7 @@
 
     const deleteWord = async (e) => {
 
-        await startARest(`/faq/delete/${e.target.dataset.id}`, 'DELETE', null);
+        await startARest(`/client/delete/${e.target.dataset.id}`, 'DELETE', null);
 
         setTimeout(() => {
             feedUpdate();
@@ -174,7 +166,7 @@
         
         devName = e.target.parentElement.parentElement.children[0].children[0].innerHTML;
         devEmail = e.target.parentElement.parentElement.children[0].children[1].innerHTML;
-        devDiscord = e.target.parentElement.parentElement.children[0].children[2].innerHTML;
+        devTelefone = e.target.parentElement.parentElement.children[0].children[2].innerHTML;
 
         editorCreated = false;
 

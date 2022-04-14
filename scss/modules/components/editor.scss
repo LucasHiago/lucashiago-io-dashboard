@@ -83,7 +83,12 @@ section{
                 .item-editor{
                     display: flex;
                     justify-content: space-between;
-                    margin: var(--sm) 0;
+                    //margin: var(--sm) 0;
+                    padding: var(--sm);
+                    &:nth-child(odd){
+                        background: #F8F6F7;
+                        border-bottom: 1px solid rgba( 0, 0, 0, .05);
+                    }
 
                     .title{
                         font-weight: bold;
@@ -97,6 +102,7 @@ section{
 
                     .action-editors{
                         display: flex;
+                        align-items: center;
                         i{
                             margin:  0 var(--sm);
                         }
