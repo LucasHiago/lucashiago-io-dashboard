@@ -28,9 +28,9 @@
                                     {item.title}
                                 </span>
                             {/if}
-                            {#if item.subtitle}
-                                <span class="subtitle">
-                                    {item.subtitle}
+                            {#if item.description}
+                                <span class="description">
+                                    {item.description}
                                 </span>
                             {/if}
                             {#if item.location}
@@ -42,6 +42,9 @@
                                 <span class="language">
                                     {item.language}
                                 </span>
+                            {/if}
+                            {#if item.icon}
+                                <span class="icon-list" contenteditable="true" bind:innerHTML={item.icon}></span>
                             {/if}
                         </p>
                         <div class="action-editors">
@@ -72,10 +75,11 @@
             </div>
         </div>
 
-
         <textarea bind:value={exampleLorem} id="" cols="30" rows="10"></textarea>
-
-
+        <div class="icon-controller">
+            <span contenteditable="true" bind:innerHTML={exampleIcon}></span>
+            <textarea bind:value={exampleIcon} id="" cols="30" rows="10"></textarea>
+        </div>
 
         {#if editorCreated}
             <button class="btn first" on:click={createWord}>Criar</button>
@@ -91,12 +95,13 @@
     import  startARest, {startRestLoading, setNewNotification, getCookie, checkLogged}  from '../data/httpRequest.js';
     import rollDown from '../data/rollDown.js'; 
  
-    let exampleTitle = 'Example Title';
+    let exampleTitle = 'Example Work';
     let exampleLorem = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi ex aliquam nesciunt repudiandae provident eius, rerum inventore veniam ducimus? Placeat animi illum repellat accusantium nemo beatae repudiandae. Aspernatur, magni quo!';
     let editorCreated = true;
     let identifier = null;
-    let location = 'section-default';
+    let location = 'work-01';
     let language = 'pt-br';
+    let exampleIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M192 384h192c53 0 96-43 96-96h32c70.6 0 128-57.4 128-128S582.6 32 512 32H120c-13.3 0-24 10.7-24 24v232c0 53 43 96 96 96zM512 96c35.3 0 64 28.7 64 64s-28.7 64-64 64h-32V96h32zm47.7 384H48.3c-47.6 0-61-64-36-64h583.3c25 0 11.8 64-35.9 64z"/></svg>';
     let Titles = [];
     let Token = getCookie('token');
 
@@ -116,13 +121,13 @@
 
        startRestLoading();
     
-       const res = await startARest('/title', 'GET', null, true, null, null, Token);
+       const res = await startARest('/work', 'GET', null, true, null, null, Token);
 
        if(res != undefined){
-        Titles = res[0].getTitles;
-        setNewNotification('Títulos carregados com sucesso!', 'success');
+        Titles = res[0].getWorks;
+        setNewNotification('Serviços carregados com sucesso!', 'success');
        } else {
-        Titles = 'Sem itens';
+        Titles = 'Sem Serviços';
        }
 
 
@@ -133,18 +138,18 @@
     const createWord = async () => {
 
         let json = {
-                location: location,
-				title: exampleTitle,
-				subtitle: exampleLorem,
-                language: language
+            location: location,
+			title: exampleTitle,
+			description: exampleLorem,
+            icon: exampleIcon,
+            language: language
 		};
 
-        await startARest('/title/create', 'POST', json);
+        await startARest('/work/create', 'POST', json);
 
         setTimeout(() => {
             feedUpdate();
         }, 500);
-
 
     }
 
@@ -153,11 +158,12 @@
         let json = {
             location: location,
 			title: exampleTitle,
-			subtitle: exampleLorem,
+			description: exampleLorem,
+            icon: exampleIcon,
             language: language
 		};
 
-        await startARest(`/title/update/${identifier}`, 'PUT', json);
+        await startARest(`/work/update/${identifier}`, 'PUT', json);
 
         setTimeout(() => {
             feedUpdate();
@@ -168,7 +174,7 @@
 
     const deleteWord = async (e) => {
 
-        await startARest(`/title/delete/${e.target.dataset.id}`, 'DELETE', null);
+        await startARest(`/work/delete/${e.target.dataset.id}`, 'DELETE', null);
 
         setTimeout(() => {
             feedUpdate();
@@ -178,10 +184,11 @@
 
     const startEditor = (e) => {
 
-        exampleTitle = 'Example Title';
+        exampleTitle = 'Example Work';
         exampleLorem = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi ex aliquam nesciunt repudiandae provident eius, rerum inventore veniam ducimus? Placeat animi illum repellat accusantium nemo beatae repudiandae. Aspernatur, magni quo!';
         language = 'pt-br';
-        location = 'section-default';
+        exampleIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M192 384h192c53 0 96-43 96-96h32c70.6 0 128-57.4 128-128S582.6 32 512 32H120c-13.3 0-24 10.7-24 24v232c0 53 43 96 96 96zM512 96c35.3 0 64 28.7 64 64s-28.7 64-64 64h-32V96h32zm47.7 384H48.3c-47.6 0-61-64-36-64h583.3c25 0 11.8 64-35.9 64z"/></svg>'
+        location = 'work-01';
         editorCreated = true;
 
     }
@@ -192,6 +199,7 @@
         let subtitle = e.target.parentElement.parentElement.children[0].children[1].innerHTML;
         let locationHtml = e.target.parentElement.parentElement.children[0].children[2].innerHTML;
         let languageHtml = e.target.parentElement.parentElement.children[0].children[3].innerHTML;
+        let iconHtml = e.target.parentElement.parentElement.children[0].children[4].innerHTML;
         let ident = e.target.parentElement.parentElement.children[0].children[0].dataset.id;
 
         exampleTitle = title;
@@ -199,6 +207,7 @@
         identifier = ident;
         location = locationHtml;
         language = languageHtml;
+        exampleIcon = iconHtml;
         editorCreated = false;
 
     }

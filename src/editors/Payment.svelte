@@ -38,6 +38,9 @@
                             <span>
                                 Tipo de pagamento
                             </span>
+                            <span>
+                                Deletar?
+                            </span>
                         </p>
                     </li>
 
@@ -70,6 +73,12 @@
                                     </span>
                                     <span>
                                         Credit Card
+                                    </span>
+                                    <span>
+                                        {item.createdAt}
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-trash" data-id="{item.id}" on:click="{deletePayment}"></i>
                                     </span>
                                 </p>
                             </li>
@@ -121,6 +130,12 @@
                                     <span>
                                         Pix payment
                                     </span>
+                                    <span>
+                                        {item.createdAt}
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-trash" data-id="{item.id}" on:click="{delePixPayment}"></i>
+                                    </span>
                                 </p>
                             </li>
                         {/if}
@@ -167,6 +182,28 @@
         const res = await startARest('/update/pix/status', 'POST', json)
 
     }
+
+    const delePixPayment = async (e) => {
+
+        await startARest(`/payment/pix/delete/${e.target.dataset.id}`, 'DELETE', null);
+
+        setTimeout(() => {
+            feedUpdate();
+        }, 500);
+
+    }
+
+    const deletePayment = async (e) => {
+
+        await startARest(`/payment/delete/${e.target.dataset.id}`, 'DELETE', null);
+
+        setTimeout(() => {
+            feedUpdate();
+        }, 500);
+
+    }
+
+    
 
 
 </script>

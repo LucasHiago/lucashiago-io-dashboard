@@ -57,8 +57,24 @@ export const routesArray = readable([
         path: 'faq'
     },
     {
+        name: 'Client Doubt',
+        icon: '<i class="fas fa-question"></i>',
+        path: 'client'
+    },
+    {
         name: 'Collab',
         icon: '<i style="font-size:22px;" class="fas fa-coffee"></i>',
         path: 'collab'
+    },
+    {
+        name: 'Works',
+        icon: '<i style="font-size:25px;" class="fas fa-briefcase"></i>',
+        path: 'work'
+    },
+    {
+        name: 'Client Leads',
+        icon: '<i style="font-size:22px;" class="fas fa-address-card"></i>',
+        path: 'clientl'
     }
+
 ]);

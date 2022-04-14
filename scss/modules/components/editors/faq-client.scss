@@ -1,0 +1,32 @@
+.word-editor {
+    &.faq-client{
+
+        .input-control {
+            align-items: flex-start;
+            display: flex;
+            
+            textarea {
+                margin: 0 var(--sm) 0 0;
+            }
+        }
+
+        .list-editors{
+            .item-editor{
+                p{
+                    span{
+                        font-size: var(--sm);
+                        &.question{
+                            font-weight: bold;
+                            max-width: 10%;
+                        }
+
+                        &.answer{
+                            max-width: 85%;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}
