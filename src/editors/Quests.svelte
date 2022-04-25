@@ -68,7 +68,7 @@
                 <input type="text" class="email" bind:value={devEmail} placeholder="Preço da quest">
                 <input type="text" class="points" bind:value={devPoints} placeholder="Pontos da quest">
                 <select name="language" id="language" on:change={getLanguage}>
-                    <option value="pt-BR" default selected>PT-BR</option>
+                    <option value="pt-br" default selected>PT-BR</option>
                     <option value="en">EN</option>
                 </select>
             </div>
@@ -97,7 +97,7 @@
     let devName, devEmail, devDiscord, devPoints;
     let editorCreated = true;
     let identifier = null;
-    let language = 'pt-BR';
+    let language = 'pt-br';
     let Titles = [];
 
 
