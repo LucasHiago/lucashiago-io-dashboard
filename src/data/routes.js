@@ -76,5 +76,4 @@ export const routesArray = readable([
         icon: '<i style="font-size:22px;" class="fas fa-address-card"></i>',
         path: 'clientl'
     }
-
 ]);
