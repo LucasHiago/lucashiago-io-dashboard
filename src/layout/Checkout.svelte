@@ -102,7 +102,7 @@
         if(res){
             setTimeout(() => {
                 json = {};
-                console.log('token limpo:', json)
+                //console.log('token limpo:', json)
             }, 500);
         }
 
@@ -137,7 +137,7 @@
             transactionAmount
         }
 
-        console.log(json)
+        //console.log(json)
 
         if(![email, name, last_name, type, number, transactionAmount].includes('')){
             const res = await startARest('/payment/pix', 'POST', json, 'Pix gerado com sucesso!');
@@ -155,7 +155,7 @@
         const res = await startARest('/publicmp', 'GET', null);
         mppublic = res[0].mpublic;
 
-        console.log(mppublic)
+        //console.log(mppublic)
 
         const mp = new MercadoPago(mppublic, {
             locale: 'pt-BR',
@@ -227,32 +227,32 @@
                         callbacks: {
                             onFormMounted: error => {
                                 if (error) return console.warn('Form Mounted handling error: ', error)
-                                console.log('Form mounted')
+                                //console.log('Form mounted')
                             },
                             onFormUnmounted: error => {
                                 if (error) return console.warn('Form Unmounted handling error: ', error)
-                                console.log('Form unmounted')
+                                //console.log('Form unmounted')
                             },
                             onIdentificationTypesReceived: (error, identificationTypes) => {
                                 if (error) return console.warn('identificationTypes handling error: ', error)
-                                console.log('Identification types available: ', identificationTypes)
+                                //console.log('Identification types available: ', identificationTypes)
                             },
                             onPaymentMethodsReceived: (error, paymentMethods) => {
                                 if (error) return console.warn('paymentMethods handling error: ', error)
-                                console.log('Payment Methods available: ', paymentMethods)
+                                //console.log('Payment Methods available: ', paymentMethods)
                                 cardType = paymentMethods[0].name;
                             },
                             onIssuersReceived: (error, issuers) => {
                                 if (error) return console.warn('issuers handling error: ', error)
-                                console.log('Issuers available: ', issuers)
+                                //console.log('Issuers available: ', issuers)
                             },
                             onInstallmentsReceived: (error, installments) => {
                                 if (error) return console.warn('installments handling error: ', error)
-                                console.log('Installments available: ', installments)
+                               //console.log('Installments available: ', installments)
                             },
                             onCardTokenReceived: (error, token) => {
                                 if (error) return console.warn('Token handling error: ', error)
-                                console.log('Token available: ', token)
+                                //console.log('Token available: ', token)
                             },
                             onSubmit: (event) => {
                                 event.preventDefault();
@@ -263,7 +263,7 @@
 
                             },
                             onFetching:(resource) => {
-                                console.log('Fetching resource: ', resource)
+                                //console.log('Fetching resource: ', resource)
 
                                 // Animate progress bar
                                 const progressBar = document.querySelector('.progress-bar')
@@ -331,32 +331,32 @@
                 callbacks: {
                     onFormMounted: error => {
                         if (error) return console.warn('Form Mounted handling error: ', error)
-                        console.log('Form mounted')
+                        //console.log('Form mounted')
                     },
                     onFormUnmounted: error => {
                         if (error) return console.warn('Form Unmounted handling error: ', error)
-                        console.log('Form unmounted')
+                        //console.log('Form unmounted')
                     },
                     onIdentificationTypesReceived: (error, identificationTypes) => {
                         if (error) return console.warn('identificationTypes handling error: ', error)
-                        console.log('Identification types available: ', identificationTypes)
+                        //console.log('Identification types available: ', identificationTypes)
                     },
                     onPaymentMethodsReceived: (error, paymentMethods) => {
                         if (error) return console.warn('paymentMethods handling error: ', error)
-                        console.log('Payment Methods available: ', paymentMethods)
+                        //console.log('Payment Methods available: ', paymentMethods)
                         cardType = paymentMethods[0].name;
                     },
                     onIssuersReceived: (error, issuers) => {
                         if (error) return console.warn('issuers handling error: ', error)
-                        console.log('Issuers available: ', issuers)
+                        //console.log('Issuers available: ', issuers)
                     },
                     onInstallmentsReceived: (error, installments) => {
                         if (error) return console.warn('installments handling error: ', error)
-                        console.log('Installments available: ', installments)
+                        //console.log('Installments available: ', installments)
                     },
                     onCardTokenReceived: (error, token) => {
                         if (error) return console.warn('Token handling error: ', error)
-                        console.log('Token available: ', token)
+                        //console.log('Token available: ', token)
                     },
                     onSubmit: (event) => {
                         event.preventDefault();
@@ -366,7 +366,7 @@
 
                     },
                     onFetching:(resource) => {
-                        console.log('Fetching resource: ', resource)
+                        //console.log('Fetching resource: ', resource)
 
                         // Animate progress bar
                         const progressBar = document.querySelector('.progress-bar')

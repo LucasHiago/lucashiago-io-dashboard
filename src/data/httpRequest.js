@@ -95,9 +95,9 @@ export const getCookie = (cname) => {
 export const checkCookie = (cname) => {
     let check = getCookie(cname);
     if (check != "") {
-      console.log("cookie exists:" + check);
+      //console.log("cookie exists:" + check);
     } else {
-       console.log("cookie not exists");
+      //console.log("cookie not exists");
     }
 }
 

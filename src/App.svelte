@@ -140,7 +140,7 @@
 	let buttonOff = true;
 
 	function actionExample(){
-		console.log('action occurs');
+		//console.log('action occurs');
 	}
 </script>
 

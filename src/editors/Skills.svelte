@@ -193,8 +193,6 @@
 
         let treat = yskill.split(',');
 
-        console.log(treat)
-
             treat.forEach(tskillyear => {
                 if(tskillyear.length >= 4){
                     if (YearSkill.includes(tskillyear) === false) {
