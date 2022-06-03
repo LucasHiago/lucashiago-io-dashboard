@@ -75,5 +75,10 @@ export const routesArray = readable([
         name: 'Client Leads',
         icon: '<i style="font-size:22px;" class="fas fa-address-card"></i>',
         path: 'clientl'
+    },
+    {
+        name: 'Client cases',
+        icon: '<i class="fas fa-building"></i>',
+        path: 'cases'
     }
 ]);

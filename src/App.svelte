@@ -71,6 +71,7 @@
 	import Collab from './editors/Collab.svelte';
 	import Work from './editors/Work.svelte';
 	import ClientLeads from './editors/LeadsClient.svelte';
+	import Cases from './editors/Cases.svelte';
 
 	import router from "page";
 
@@ -110,6 +111,7 @@
 	router('/client', () => (page = QClients));
 	router('/clientl', () => (page = ClientLeads));
 	router('/collab', () => (page = Collab));
+	router('/cases', () => (page = Cases));
 	router('/word', () => (page = Word));
 	router('/work', () => (page = Work));
 	router('/video', () => (page = Video));
