@@ -13,13 +13,13 @@
     <div class="list-inside-content">
         <ul class="list-editors">
 
-            {#if Videos.length <= 0}
+            {#if typeof Videos == 'string'}
                 <h3>
                     Não há vídeos cadastrados
                 </h3>
             {/if}
 
-            {#if Videos.length >= 1}
+            {#if typeof Videos != 'string'}
                 {#each Videos as item, i}
                     <li class="item-editor" data-video="https://cdnlucashiagoio.s3.sa-east-1.amazonaws.com/videos/{item}" data-item="{item}">
                         <p>

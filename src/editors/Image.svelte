@@ -13,13 +13,13 @@
     <div class="list-inside-content">
         <ul class="list-editors">
 
-            {#if Images.length <= 0}
+            {#if typeof Images == 'string'}
                 <h3>
                     Não há imagens cadastradas
                 </h3>
             {/if}
 
-            {#if Images.length >= 1}
+            {#if typeof Images != 'string'}
                 {#each Images as item, i}
                     <li class="item-editor" data-media="https://cdnlucashiagoio.s3.sa-east-1.amazonaws.com/media/{item}" data-item="{item}">
                         <p>

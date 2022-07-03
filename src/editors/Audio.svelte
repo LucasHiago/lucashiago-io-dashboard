@@ -13,13 +13,13 @@
     <div class="list-inside-content">
         <ul class="list-editors">
 
-            {#if Audios.length <= 0}
+            {#if typeof Audios == 'string'}
                 <h3>
                     Não há audios cadastrados
                 </h3>
             {/if}
 
-            {#if Audios.length >= 1}
+            {#if typeof Audios != 'string'}
                 {#each Audios as item, i}
                     <li class="item-editor" data-audio="https://cdnlucashiagoio.s3.sa-east-1.amazonaws.com/audios/{item}" data-item="{item}">
                         <p>

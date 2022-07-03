@@ -41,5 +41,8 @@
     "sirv-cli": "^2.0.0",
     "svelte-environment-variables": "^1.0.4",
     "svelte-navigator": "^3.1.5"
+  },
+  "engines": {
+    "node": "14.17.0"
   }
 }
