@@ -48,7 +48,7 @@
         <div class="media-controller">
             <i class="fas fa-times" on:click={closeMedia}></i>
 			
-			<!-- svelte-ignore a11y-missing-attribute -->
+			<!-- svelte-ignore a11y-img-redundant-alt -->
 			<img src="{thisMedia}" alt="register image">
 
             {#if editorCreated}
