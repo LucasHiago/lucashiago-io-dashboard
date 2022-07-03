@@ -3,9 +3,11 @@
 </svelte:head>
 
 <main>
+
+	<Header title={'Dashboard Squadevops'} />
 	
 	{#if thispage != 'Checkout' && thispage != 'Login' && thispage != 'Unauthorized'}
-		<Header title={'Little bit older'} />
+
 
 		<div class="main">
 
@@ -23,6 +25,7 @@
 
 		</div>
 	{:else if thispage == 'Login'}
+
 		<section class="Login">
 
 			<svelte:component this="{page}" params="{params}" />	
