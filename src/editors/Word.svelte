@@ -193,7 +193,7 @@
         let locationHtml = e.target.parentElement.parentElement.children[0].children[2].innerHTML;
         let languageHtml = e.target.parentElement.parentElement.children[0].children[3].innerHTML;
         let ident = e.target.parentElement.parentElement.children[0].children[0].dataset.id;
-
+        
         exampleTitle = title;
         exampleLorem = subtitle;
         identifier = ident;
